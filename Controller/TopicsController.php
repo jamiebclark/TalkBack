@@ -5,6 +5,18 @@ class TopicsController extends TalkBackAppController {
 	public $components = array('TalkBack.Commentable');
 	
 	public function beforeFilter() {
+		$this->setValidateRedirectMethod('forumPermission', function($args) {
+			if (!$this->Topic->Forum->isCommenterAllowed(
+				$args[0],
+				$this->CurrentCommenter->getId(),
+				$this->getPrefix()
+			)) {
+				$msg = 'You don\'t have permission to edit this Forum';
+				$redirect = true;
+			}
+			return compact('msg', 'redirect');
+		});
+				
 		$this->setValidateRedirectMethod('hasForum', function($args) {
 			if (empty($this->request->data['Topic']['forum_id']) && empty($args['forumId'])) {
 				$msg = 'Please select a forum before adding a topic';
@@ -28,6 +40,8 @@ class TopicsController extends TalkBackAppController {
 	}
 	
 	public function view($id = null) {
+		$this->validateRedirect(array('permission' => array($id)));
+
 		$topic = $this->FormData->findModel($id, null, array(
 			'contain' => array(
 				'Forum' => array('Channel'),
@@ -45,7 +59,7 @@ class TopicsController extends TalkBackAppController {
 	}
 	
 	public function add($forumId = null) {
-		$this->validateRedirect(array('login', 'hasForum' => compact('forumId')));
+		$this->validateRedirect(array('forumPermission' => array($forumId), 'login', 'hasForum' => compact('forumId')));
 		$this->FormData->addData(array(
 			'default' => array(
 				'Topic' => array(

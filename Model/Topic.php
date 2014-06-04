@@ -22,6 +22,23 @@ class Topic extends TalkBackAppModel {
 		'Topic.sticky' => 'DESC',
 		'Topic.created' => 'DESC',
 	);
+
+/**
+ * Determines if a given Commenter ID has sufficient permissions to view a Topic
+ * 
+ * @param int $id ID of the Topic
+ * @param int $commenterId ID of the Commenter
+ * @param string|null $prefix The current page Prefix
+ * @return bool True on success
+ **/
+	public function isCommenterAllowed($id, $commenterId = null, $prefix = null) {
+		$result = $this->find('first', array(
+			'contain' => array('Forum' => array('Channel')),
+			'conditions' => array($this->escapeField('id') => $id)
+		));
+		return $this->Forum->Channel->isCommenterAllowed($result['Forum']['Channel']['id'], $commenterId, $prefix);
+	}
+	
 	
 /**
  * Determines if a given Commenter ID is an Administrator of the current topic

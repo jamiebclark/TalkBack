@@ -9,6 +9,8 @@ class ChannelsController extends TalkBackAppController {
 	}
 	
 	public function view($id = null) {
+		$this->validateRedirect(array('permission' => array($id)));
+
 		if (empty($id)) {
 			$this->redirect(array('action' => 'index'));
 		}

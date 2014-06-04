@@ -1,10 +1,27 @@
 <?php
 class ForumsController extends TalkBackAppController {
-	public function index() {
-		$this->set('forums', $this->paginate());
+	
+	public function index($channelId = null) {
+		if (!empty($channelId)) {
+			$this->redirect(array('controller' => 'channels', 'action' => 'view', $channelId));
+		} else {
+			$channelIds = $this->Forum->Channel->findCommenterChannelIds(
+				$this->CurrentCommenter->getId(),
+				$this->getPrefix()
+			);
+			$this->paginate = array(
+				'contain' => array('Channel'),
+				'conditions' => array(
+					'Forum.channel_id' => $channelIds,
+				)
+			);
+			$this->set('forums', $this->paginate());
+		}
 	}
 	
 	public function view($id = null) {
+		$this->validateRedirect(array('permission' => array($id)));
+		
 		$this->FormData->findModel($id);
 		$this->paginate = array(
 			'Topic' => array(

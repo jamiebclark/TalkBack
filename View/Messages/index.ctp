@@ -23,6 +23,7 @@
 			var $window = $('#tb-message-window'),
 				$messageLinks = $('.tb-messages');
 			$window.addClass('loading');
+			$(this).removeClass('unread');
 			$.ajax(url, {
 				dataType: 'html'
 			})

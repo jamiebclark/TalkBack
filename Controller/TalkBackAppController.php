@@ -47,6 +47,11 @@ class TalkBackAppController extends AppController {
 		$this->_validationRedirectMethods[$name] = $method;
 	}
 	
+	// Quickly finds the page prefix if it exists, or returns null if it doesn't
+	protected function getPrefix() {
+		return !empty($this->request->params['prefix']) ? $this->request->params['prefix'] : null;
+	}
+	
 	protected function validateRedirect($type, $args = array()) {
 		if (is_array($type)) {
 			foreach ($type as $subType => $args) {
@@ -62,6 +67,19 @@ class TalkBackAppController extends AppController {
 					if (!$this->Auth->loggedIn()) {
 						$msg = 'Please log in first';
 						$redirect = $this->Auth->redirectUrl();
+					}
+				break;
+				case 'permission':
+					//Looks for a function called "isCommenterAllowed" to check for permission on current page
+					if ($this->{$this->modelClass}->hasMethod('isCommenterAllowed')) {
+						if (!$this->{$this->modelClass}->isCommenterAllowed(
+							$args[0],
+							$this->CurrentCommenter->getId(),
+							$this->getPrefix()
+						)) {
+							$msg = 'Sorry, you don\'t have permission to view this ' . $this->modelClass;
+							$redirect = true;
+						}
 					}
 				break;
 				default:

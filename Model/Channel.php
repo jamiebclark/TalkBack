@@ -30,15 +30,23 @@ class Channel extends TalkBackAppModel {
 		$this->setDefaultTitle($this->id);
 		return parent::afterSave($created, $options);
 	}
-	
+
 /**
  * Finds all associated channels with a Commenter
  * 
  * @param int $commenterId ID of Commenter
  * @param string $prefix The current page prefix
- * @return Array|null List of channels if they exist, null if they do not
+ * @return Array|null Array of Channel IDs if they exist, null if they do not
  **/
-	public function findCommenterChannels($commenterId = null, $prefix = null) {
+	public function findCommenterChannelIds($commenterId = null, $prefix = null) {
+		if ($result = $this->findCommenterChannels($commenterId, $prefix)) {
+			return Hash::extract($result, '{n}.Channel.id');
+		} else {
+			return null;
+		}
+	}
+	
+	public function getCommenterAssociation($commenterId = null, $prefix = null) {
 		$query = array(
 			'recursive' => -1,
 			'group' => $this->escapeField('id'),
@@ -104,7 +112,34 @@ class Channel extends TalkBackAppModel {
 				$query['conditions']['OR'][]['CommenterTypeFilter.commenter_type_id'] = $this->CommenterType->allCommentersId;
 			}
 		}
+		return $query;	
+	}
+	
+/**
+ * Finds all associated channels with a Commenter
+ * 
+ * @param int $commenterId ID of Commenter
+ * @param string $prefix The current page prefix
+ * @return Array|null List of channels if they exist, null if they do not
+ **/
+	public function findCommenterChannels($commenterId = null, $prefix = null) {
+		$query = $this->getCommenterAssociation($commenterId, $prefix);
 		return $this->find('all', $query);
+	}
+
+/**
+ * Determines if a given Commenter ID has sufficient permissions to view a Channel
+ * 
+ * @param int $id ID of the Channel
+ * @param int $commenterId ID of the Commenter
+ * @param string|null $prefix The current page Prefix
+ * @return bool True on success
+ **/
+	public function isCommenterAllowed($id, $commenterId = null, $prefix = null) {
+		if ($channelIds = $this->findCommenterChannelIds($commenterId, $prefix)) {
+			return in_array($id, $channelIds);
+		}
+		return null;
 	}
 	
 /**
