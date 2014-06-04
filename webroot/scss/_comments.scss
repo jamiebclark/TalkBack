@@ -1,0 +1,84 @@
+
+
+.tb-comment {
+	border: $comment-border;
+	padding: $comment-padding;
+	border-radius: $comment-border-radius;
+}
+.tb-comments .tb-comment {
+	margin-bottom: 10px;
+}
+.tb-comments .tb-comment-thumbnail {
+	width: $thumb-width;
+}
+.tb-comments-lg .tb-comment-thumbnail {
+	width: $thumb-lg-width;
+}
+.tb-comments-sm .tb-comment-thumbnail {
+	width: $thumb-sm-width;
+}
+
+@include comment-variant('unread', $comment-unread-color, $comment-unread-border, $comment-unread-bg) {
+	font-weight: bold;
+}
+@include comment-variant('active', $comment-active-color, $comment-active-border, $comment-active-bg) {
+
+}
+@include comment-variant('read', $comment-read-color, $comment-read-border, $comment-read-bg) {
+
+}
+@include comment-variant('deleted', $comment-deleted-color, $comment-deleted-border, $comment-deleted-bg) {
+	font-style: italic;
+}
+
+/*
+@include respond-to(handhelds) {
+	.tb-comment-replies .comment-thumbnail {
+		display: none;
+		height: 0px;
+	}
+}
+@include respond-to(medium-screens) {
+	.tb-comment-replies .comment-thumbnail {
+		height: $base-line-computed * 2;
+	}
+}
+
+@include respond-to(wide-screens) {	
+	.tb-comment-replies .comment-thumbnail {
+		height: $base-line-computed * 5;
+	}
+}
+*/
+.tb-comment {
+	overflow: hidden;
+	padding: 10px;
+	margin: 0;
+	border-radius: 0;
+	border-left: 0;
+	border-right: 0;
+	border-top: 0;
+
+	background-color: white;
+	max-width: none;
+	margin: 0;
+}
+.tb-comment-title {
+	margin: 0;
+	margin-bottom: 10px;
+	font-family: $comment-title-font;
+	font-size: $comment-title-size;
+	.date-commented {
+		float: right;
+		color: #CCC;
+	}
+}
+.comment-edited {
+	font-style: italic;
+}
+
+@for $i from 1 through 10 {
+	.tb-comment-depth-#{$i} {
+		margin-left: $i * $comment-depth-indent;
+	}
+}

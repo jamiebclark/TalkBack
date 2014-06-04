@@ -1,0 +1,51 @@
+.tb-message {
+	margin: 0;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	border-radius: 0;
+	&.unread {
+		font-weight: bold;
+	}
+}
+.tb-message-date {
+	font-size: 10px;
+	float: right;
+}
+.tb-message-thumb {
+	display: block;
+	min-height: $thumb-width;
+	line-height: $thumb-width;
+	width: $thumb-width;
+	text-align: center;
+	img {
+		width: 100%;
+	}
+}
+
+#tb-messages-list, #tb-message-window {
+	overflow: auto;
+	overflow-x: hidden;
+	position: relative;
+}
+#tb-messages-list {
+	height: $message-window-height - $message-list-title-heading-height + $message-list-title-nav-height;
+}
+.tb-message-list-heading {
+	font-size: $message-list-title-heading-size;
+	line-height: $message-list-title-heading-height;
+	margin: 0;
+	padding: $message-list-title-padding-vertical $message-list-title-padding-horizontal;
+}
+.tb-message-list-nav {
+	min-height: $message-list-title-nav-height;
+}
+#tb-message-window {
+	min-height: $message-window-height;
+	border: $border-light;
+	padding: 20px;
+	&.loading {
+		opacity: .25;
+		background-color: #CCC;
+	}
+}

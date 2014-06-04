@@ -1,0 +1,59 @@
+// Breaks
+$break-small: 						360px !default;
+$break-mid: 						760px !default;
+$break-large:						960px !default;
+
+// Colors
+$dark-grey:							#666;
+$light-grey:						#EEE;
+$grey:								#CCC;
+
+$border-dark:						1px solid $dark-grey;
+$border-light:						1px solid $light-grey;;
+
+// Comments
+// --------------------------------------------------
+$thumb-width:						40px !default;
+$thumb-sm-width:					20px !default;
+$thumb-lg-width:					80px !default;
+
+$comment-border-radius:				4px;
+$comment-padding:					20px;
+
+$comment-border:					1px solid $light-grey;
+$comment-bg:						transparent;
+$comment-color: 					inherit;
+
+$comment-title-font:				inherit;
+$comment-title-size:				12px;
+$comment-depth-indent:				20px;
+
+// Variants
+$comment-active-border:				$comment-border;
+$comment-active-bg:					$comment-bg;
+$comment-active-color:				$comment-color;
+
+$comment-edited-border:				$comment-border;
+$comment-edited-bg:					$comment-bg;
+$comment-edited-color:				$comment-color;
+
+$comment-read-border:				$comment-border;
+$comment-read-bg:					$comment-bg;
+$comment-read-color:				$comment-color;
+
+$comment-unread-border:				1px solid $dark-grey;
+$comment-unread-bg:					$comment-bg;
+$comment-unread-color:				$comment-color;
+
+$comment-deleted-border:			$comment-border;
+$comment-deleted-bg:				$comment-bg;
+$comment-deleted-color:				$grey;
+
+// Messages
+// -------------------------------------------------
+$message-window-height: 				800px;
+$message-list-title-heading-size:		24px;
+$message-list-title-padding-vertical:	10px;
+$message-list-title-padding-horizontal:	0;
+$message-list-title-heading-height: 	$message-list-title-heading-size + 10 + 2 * $message-list-title-padding-vertical;
+$message-list-title-nav-height:			40px + 2 * $message-list-title-padding-vertical;
