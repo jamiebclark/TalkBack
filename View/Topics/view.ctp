@@ -1,6 +1,7 @@
 <?php
-$this->Html->addCrumb('Forums', array(
-	'controller' => 'forums', 'action' => 'index',
+/*
+$this->Html->addCrumb($topic['Forum']['Channel']['title'], array(
+	'controller' => 'channels', 'action' => 'view', $topic['Forum']['Channel']['id'],
 ));
 $this->Html->addCrumb($topic['Forum']['title'], array(
 	'controller' => 'forums', 'action' => 'view', $topic['Forum']['id']
@@ -8,6 +9,8 @@ $this->Html->addCrumb($topic['Forum']['title'], array(
 $truncated = $this->Text->truncate($topic['Topic']['title']);
 $this->Html->addCrumb($truncated);
 $this->set('title_for_layout', $truncated);
+*/
+echo $this->element('topics/crumbs');
 
 $stamp = strtotime($topic['Topic']['created']);
 

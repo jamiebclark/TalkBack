@@ -13,7 +13,19 @@
 		</div>
 	</div>
 	<div class="col-sm-8">
-		<div id="tb-message-window" data-url="<?php echo Router::url(array('action' => 'view', $activeMessageId)); ?>"></div>
+		<div id="tb-message-window" data-url="<?php echo Router::url(array('action' => 'view', $activeMessageId)); ?>">
+			<h3>Get Started!</h3>
+			<p>
+			<?php if (empty($messages)): ?>
+				Looks like you haven't messages anyone yet! 
+			<?php endif; ?>
+			<?php echo $this->Html->link(
+				'Compose a new message', 
+				array('action' => 'add'), 
+				array('class' => 'ajax-modal btn btn-large btn-default')
+			); ?>
+			</p>
+		</div>
 	</div>
 </div>
 <?php $this->Html->scriptStart(array('inline' => false)); ?>

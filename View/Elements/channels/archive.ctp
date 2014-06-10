@@ -5,12 +5,17 @@ foreach ($channels as $channel):
 		array(
 			$this->Html->link(
 				$channel['Channel']['title'],
-				array('controller' => 'channels', 'action' => 'view', $channel['Channel']['id'], 'plugin' => 'talk_back')
+				array(
+					'controller' => 'channels', 
+					'action' => 'view', 
+					$channel['Channel']['id'], 
+					'plugin' => 'talk_back'
+				)
 			),
 			'Channel',
 		), array(
 			number_format($channel['Channel']['forum_count']),
-			'Forumns',
+			'Forums',
 		), array(
 			number_format($channel['Channel']['topic_count']),
 			'Topics',

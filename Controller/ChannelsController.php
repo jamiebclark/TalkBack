@@ -9,12 +9,23 @@ class ChannelsController extends TalkBackAppController {
 	}
 	
 	public function view($id = null) {
+		$result = $this->FormData->findModel($id);
+		$result = $result['Channel'];
+		$prefix = $this->getPrefix();
+		if (!empty($result['prefix']) != $prefix) {
+			$this->redirect(array(
+				'action' => 'view',
+				$id,
+				$prefix => false,
+				$result['prefix'] => true,
+			));
+		}
+
 		$this->validateRedirect(array('permission' => array($id)));
 
 		if (empty($id)) {
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->FormData->findModel($id);
 		$this->paginate = array('Forum' => array('conditions' => array('Forum.channel_id' => $id)));
 		$this->set('forums', $this->paginate('Forum'));
 	}

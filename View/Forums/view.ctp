@@ -1,3 +1,4 @@
+<?php echo $this->element('forums/crumbs'); ?>
 <h2><?php echo $forum['Forum']['title']; ?></h2>
 <?php echo $this->element('topics/archive'); ?>
 <?php echo $this->Html->link(	
