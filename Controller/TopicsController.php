@@ -40,6 +40,8 @@ class TopicsController extends TalkBackAppController {
 	}
 	
 	public function view($id = null) {
+		$this->prefixRedirect($id);
+		
 		$this->validateRedirect(array('permission' => array($id)));
 
 		$topic = $this->FormData->findModel($id, null, array(
@@ -56,6 +58,12 @@ class TopicsController extends TalkBackAppController {
 
 		$this->Commentable->setComments($id, 10);
 		$this->set(compact('isCommentable'));
+		
+		// Sidebar elements
+		// -------------------------------
+		$this->set('sidebarTopics', $this->Topic->findSidebar([
+			'conditions' => ['Topic.forum_id' => $topic['Topic']['forum_id']]
+		]));
 	}
 	
 	public function add($forumId = null) {

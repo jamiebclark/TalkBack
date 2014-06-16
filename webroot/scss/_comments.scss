@@ -77,8 +77,16 @@
 	font-style: italic;
 }
 
-@for $i from 1 through 10 {
-	.tb-comment-depth-#{$i} {
-		margin-left: $i * $comment-depth-indent;
+$comments-max-width: 	780px;
+#comments {
+	.media {
+		max-width: none;
+		//margin-left: 0;
+	}
+	@for $i from 1 through 10 {
+		.media.tb-comment-depth-#{$i} {
+			margin-left: $i * $comment-depth-indent;
+			//max-width: $comments-max-width - $i * $comment-depth-indent;
+		}
 	}
 }

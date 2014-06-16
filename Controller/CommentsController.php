@@ -3,6 +3,7 @@ class CommentsController extends TalkBackAppController {
 	public $name = 'Comments';
 	
 	public function beforeFilter() {
+
 		$this->Components->unload('TalkBack.Commentable');
 		$this->setValidateRedirectMethod('editable', function($args) {
 			if (!$this->Comment->isEditable($args['id'], $this->Auth->user('id'), $this->CurrentCommenter->isAdmin())) {
@@ -25,7 +26,8 @@ class CommentsController extends TalkBackAppController {
 			}
 			return compact('msg', 'redirect');
 		});
-		
+
+
 		/**
 		 * If an action is not found, it checks to see if the action exists without the prefix
 		 * This allows adding and editing comments from custom prefixes without stripping the original prefix,
@@ -35,10 +37,11 @@ class CommentsController extends TalkBackAppController {
 		if (!method_exists($this, $action) && !empty($this->request->params['prefix'])) {
 			$action = substr($action, strlen($this->request->params['prefix']) + 1);	//Strip prefix
 			if (method_exists($this, $action)) {
-				return call_user_func_array(array($this, $action), $this->request->params['pass']);
+				$this->view = $action;
+				$this->request->params['action'] = $action;
+				//return call_user_func_array(array($this, $action), $this->request->params['pass']);
 			}
 		}
-		
 		return parent::beforeFilter();
 	}
 	
@@ -78,7 +81,6 @@ class CommentsController extends TalkBackAppController {
 		$this->validateRedirect(array('login', 'hasModel' => compact('model')));
 		
 		// $this->FormData->setSuccessRedirect(false);
-		
 		$this->FormData->addData(array(
 			'default' => array(
 				'Comment' => array(
@@ -125,6 +127,5 @@ class CommentsController extends TalkBackAppController {
 		$url['comment'] = $id;
 		return $url;
 	}
-	
 
 }

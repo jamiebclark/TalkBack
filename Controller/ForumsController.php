@@ -5,16 +5,17 @@ class ForumsController extends TalkBackAppController {
 		if (!empty($channelId)) {
 			$this->redirect(array('controller' => 'channels', 'action' => 'view', $channelId));
 		} else {
+			$currentCommenterId = $this->CurrentCommenter->getId();
 			$channelIds = $this->Forum->Channel->findCommenterChannelIds(
-				$this->CurrentCommenter->getId(),
+				$currentCommenterId,
 				$this->getPrefix()
 			);
-			$this->paginate = array(
-				'contain' => array('Channel'),
-				'conditions' => array(
-					'Forum.channel_id' => $channelIds,
-				)
-			);
+			
+			$this->paginate = [
+				//'relatedUnread' => 'Comment',
+				'contain' => ['Channel'],
+				'conditions' => ['Forum.channel_id' => $channelIds],
+			];
 			$this->set('forums', $this->paginate());
 		}
 	}
@@ -25,10 +26,14 @@ class ForumsController extends TalkBackAppController {
 		$this->FormData->findModel($id);
 		$this->paginate = array(
 			'Topic' => array(
+				'contain' => array('CurrentCommenterHasRead', 'Commenter', 'LastComment'),
 				'conditions' => array('Topic.forum_id' => $id)
 			)
 		);
 		$this->set('topics', $this->paginate('Topic'));		
+		$this->set('sidebarTopics', $this->Forum->Topic->findSidebar([
+			'conditions' => ['Forum.id' => $id]
+		]));
 	}
 	
 	public function admin_index() {

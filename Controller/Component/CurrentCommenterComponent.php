@@ -4,7 +4,7 @@ class CurrentCommenterComponent extends Component {
 	public $name = 'CurrentCommenter';
 	public $controller;
 	
-	public $components = array('Auth');
+	public $components = ['Auth'];
 	
 	private $_commenterId = null;
 	private $_commenter = null;
@@ -46,6 +46,14 @@ class CurrentCommenterComponent extends Component {
 			$this->controller->set(compact('currentCommenter'));
 
 			$this->setAdmin($this->_isAdmin);
+			
+			if (
+				!empty($this->controller->modelClass) && 
+				is_object($this->controller->{$this->controller->modelClass}) &&
+				$this->controller->{$this->controller->modelClass}->hasMethod('setCurrentCommenter')
+			) {
+				$this->controller->{$this->controller->modelClass}->setCurrentCommenter($commenterId);
+			}
 			
 			$Model = ClassRegistry::init('TalkBack.Comment', true);
 			if ($Model->hasMethod('setCurrentCommenter')) {

@@ -24,6 +24,13 @@ class Comment extends TalkBackAppModel {
 		)
 	);
 
+	public $validate = array(
+		'body' => array(
+			'rule' => 'notEmpty',
+			'message' => 'Please enter a comment',
+		)
+	);
+	
 	private $_parentClassName;
 	
 	public function beforeSave($options = array()) {

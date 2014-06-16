@@ -23,10 +23,15 @@ class CommenterHelper extends TalkBackAppHelper {
 	public function link($commenter = array()) {
 		$commenter = !empty($commenter['Commenter']) ? $commenter['Commenter'] : $commenter;
 		return $this->Html->link(
-			$commenter[Configure::read('TalkBack.Commenter.displayField')],
+			$this->name($commenter),
 			array('controller' => 'commenters', 'action' => 'view', $commenter['id'], 'plugin' => 'talk_back') + Prefix::reset(),
 			array('class' => 'tb-commenter-link')
 		);
+	}
+	
+	public function name($commenter = []) {
+		$commenter = !empty($commenter['Commenter']) ? $commenter['Commenter'] : $commenter;
+		return $commenter[Configure::read('TalkBack.Commenter.displayField')];	
 	}
 	
 	// Creates an autocomplete to add commenters into a form

@@ -10,9 +10,13 @@ $unsubscribeUrl = $this->Comment->urlArray(array(
 if (!empty($this->request->params['prefix'])) {
 	$url[$this->request->params['prefix']] = false;
 }
+
+$text = $this->DisplayText->text($comment['Comment']['body'], array('html' => false));
+$text = strip_tags($text);
+
 ?>
 A new comment has been added to a conversation you're a part of:
-"<?php echo $this->DisplayText->text($comment['Comment']['body'], array('html' => false)); ?>"
+"<?php echo $text; ?>"
 
 Posted by <?php echo $comment['Commenter'][Configure::read('TalkBack.Commenter.displayField')]; ?> 
 on <?php echo date('F j, Y h:iA', strtotime($comment['Comment']['created'])); ?> 

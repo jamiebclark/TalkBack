@@ -13,20 +13,23 @@ class ChannelsController extends TalkBackAppController {
 		$result = $result['Channel'];
 		$prefix = $this->getPrefix();
 		if (!empty($result['prefix']) != $prefix) {
-			$this->redirect(array(
+			$this->redirect([
 				'action' => 'view',
 				$id,
 				$prefix => false,
 				$result['prefix'] => true,
-			));
+			]);
 		}
-
-		$this->validateRedirect(array('permission' => array($id)));
+		$this->validateRedirect(['permission' => [$id]]);
 
 		if (empty($id)) {
-			$this->redirect(array('action' => 'index'));
+			$this->redirect(['action' => 'index']);
 		}
-		$this->paginate = array('Forum' => array('conditions' => array('Forum.channel_id' => $id)));
+		$this->set('sidebarTopics', $this->Channel->Forum->Topic->findSidebar([
+			'conditions' => ['Forum.channel_id' => $id]
+		]));
+		
+		$this->paginate = ['Forum' => ['conditions' => ['Forum.channel_id' => $id]]];
 		$this->set('forums', $this->paginate('Forum'));
 	}
 	
@@ -36,9 +39,7 @@ class ChannelsController extends TalkBackAppController {
 	
 	public function admin_view($id = null) {
 		$this->FormData->findModel($id);
-		$this->paginate = array(
-			'Forum' => array('conditions' => array('channel_id' => $id))
-		);
+		$this->paginate = ['Forum' => ['conditions' => ['channel_id' => $id]]];
 		$this->set('forums', $this->paginate('Forum'));
 	}
 	
@@ -47,13 +48,11 @@ class ChannelsController extends TalkBackAppController {
 	}
 	
 	public function admin_add() {
-		$this->FormData->addData(array(
-			'default' => array(
-				'AdminCommenter' => array(
-					'AdminCommenter' => array($this->CurrentCommenter->getId())
-				)
-			)
-		));
+		$this->FormData->addData([
+			'default' => [
+				'AdminCommenter' => ['AdminCommenter' => [$this->CurrentCommenter->getId()]]
+			]
+		]);
 	}
 	
 	public function admin_delete($id = null) {
@@ -63,7 +62,7 @@ class ChannelsController extends TalkBackAppController {
 	public function _setFormElements() {
 		$prefixes = Configure::read('Routing.prefixes');
 		$prefixes = array_combine($prefixes, $prefixes);
-		$prefixes = array('' => ' -- Public (no prefix) -- ') + $prefixes;
+		$prefixes = ['' => ' -- Public (no prefix) -- '] + $prefixes;
 		
 		if ($this->Channel->CommenterType->isTree()) {
 			$commenterTypes = $this->Channel->CommenterType->generateTreeList();
@@ -86,9 +85,9 @@ class ChannelsController extends TalkBackAppController {
 			$extract = false;
 		}
 		if ($extract) {
-			return $this->Channel->{$modelName}->find('list', array(
-				'conditions' => array($modelName . '.id' => Hash::extract($this->request->data, $extract))
-			));
+			return $this->Channel->{$modelName}->find('list', [
+				'conditions' => [$modelName . '.id' => Hash::extract($this->request->data, $extract)]
+			]);
 		}
 		return null;
 	}

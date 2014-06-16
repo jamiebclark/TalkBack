@@ -1,4 +1,6 @@
 <?php
+$this->ModelView->setModel('TalkBack.Channel');
+
 echo $this->Layout->defaultHeader();
 $this->Table->reset();
 foreach ($channels as $channel):
@@ -10,3 +12,4 @@ foreach ($channels as $channel):
 		array($this->ModelView->actionMenu(array('view', 'edit', 'delete'), $channel['Channel']), 'Actions'),
 	), true);
 endforeach;
+echo $this->Table->output(array('paginate' => true));

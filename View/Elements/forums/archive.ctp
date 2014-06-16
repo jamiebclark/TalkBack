@@ -1,25 +1,62 @@
 <?php
 $this->Table->reset();
+if (!empty($forums['Channel'])) {
+	$passChannel = $forums['Channel'];
+}
+if (!empty($forums['Forum'])) {
+	$forums = $forums['Forum'];
+}
 foreach ($forums as $forum):
+	if (!empty($forum['Channel'])) {
+		$channel = $forum['Channel'];
+	} else if (!empty($passChannel)) {
+		$channel = $passChannel;
+	}
+	
+	$totalUnread = !empty($forum[0]['total_unread']) ? $forum[0]['total_unread'] : 0;
+	
+	if (!empty($forum['Forum'])) {
+		$forum = $forum['Forum'];
+	}
+	$url = array('controller' => 'forums', 'action' => 'view', $forum['id'], 'plugin' => 'talk_back');
+	
+	$topics = $this->Html->tag('span',
+		number_format($forum['topic_count']),
+		array('class' => 'badge')
+	);
+	$title = $this->Html->link(
+		!empty($forum['title']) ? $forum['title'] : 'No Title',
+		$url,
+		['class' => !empty($totalUnread) ? 'unread' : null]
+	);
+	if (!empty($totalUnread)) {
+		$title .= ' ' . $this->Html->link(
+			number_format($totalUnread) . ' new!',
+			$url,
+			['class' => 'label label-success']
+		);
+	}
 	$this->Table->cells(array(
 		array(
-			$this->Html->link(
-				!empty($forum['Forum']['title']) ? $forum['Forum']['title'] : 'No Title',
-				array('controller' => 'forums', 'action' => 'view', $forum['Forum']['id'], 'plugin' => 'talk_back')
-			),
+			$title,
 			'Forum',
 		), array(
 			$this->Html->link(
-				$forum['Channel']['title'],
-				array('controller' => 'channels', 'action' => 'view', $forum['Channel']['id'], 'plugin' => 'talk_back')
+				$channel['title'],
+				array('controller' => 'channels', 'action' => 'view', $channel['id'], 'plugin' => 'talk_back')
 			),
 			'Channel',
 		), array(
-			number_format($forum['Forum']['topic_count']),
+			$topics,
 			'Topics',
+			array('class' => 'text-center'),
 		), array(
-			number_format($forum['Forum']['comment_count']),
+			$this->Html->tag('span',
+				number_format($forum['comment_count']),
+				array('class' => 'badge')
+			),				
 			'Comments',
+			array('class' => 'text-center'),
 		),
 	), true);
 endforeach;

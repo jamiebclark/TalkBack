@@ -36,11 +36,7 @@ class TalkBackAppModel extends AppModel {
 	}
 	
 	// Returns the table name including any existing prefixes
-	protected function getTable() {
-		$table = $this->useTable;
-		if (!empty($this->tablePrefix)) {
-			$table = $this->tablePrefix . $table;
-		}
-		return $table;
+	public function getTable() {
+		return $this->getDataSource()->fullTableName($this);
 	}
 }

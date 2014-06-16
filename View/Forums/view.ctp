@@ -1,8 +1,15 @@
-<?php echo $this->element('forums/crumbs'); ?>
-<h2><?php echo $forum['Forum']['title']; ?></h2>
-<?php echo $this->element('topics/archive'); ?>
-<?php echo $this->Html->link(	
-	'Add Topic', 
-	array('controller' => 'topics', 'action' => 'add', $forum['Forum']['id']),
-	array('class' => 'btn btn-default btn-primary')
-);?>
+<div class="row">
+	<div class="col-md-8">
+		<?php echo $this->element('forums/crumbs'); ?>
+		<h2><?php echo $forum['Forum']['title']; ?></h2>
+		<?php echo $this->element('topics/archive'); ?>
+		<?php echo $this->Html->link(	
+			'Add Topic', 
+			array('controller' => 'topics', 'action' => 'add', $forum['Forum']['id']),
+			array('class' => 'btn btn-default btn-primary')
+		);?>
+	</div>
+	<div class="col-md-4">
+		<?php echo $this->element('TalkBack.topics/sidebar'); ?>
+	</div>
+</div>

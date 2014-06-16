@@ -1,19 +1,17 @@
 <?php
 class TalkBackAppController extends AppController {
-	public $components = array(
+	public $components = [
 		'TalkBack.Commentable',
 		'TalkBack.CurrentCommenter',
 		
-		'FormData.FindModel' => array('plugin' => 'TalkBack'),
-		'FormData.FormData' => array(
-			'plugin' => 'TalkBack',
-		)
-	);
+		'FormData.FindModel' => ['plugin' => 'TalkBack'],
+		'FormData.FormData' => ['plugin' => 'TalkBack']
+	];
 	
 	//public $helpers = array('TalkBack.TalkBack');
 	protected $tb_prefix;
 
-	private $_validationRedirectMethods = array();
+	private $_validationRedirectMethods = [];
 	
 	public function beforeFilter() {
 		$this->savePrefix();
@@ -52,12 +50,34 @@ class TalkBackAppController extends AppController {
 		return !empty($this->request->params['prefix']) ? $this->request->params['prefix'] : null;
 	}
 	
-	protected function validateRedirect($type, $args = array()) {
+	// Makes sure that the given item matches up with the required prefix
+	protected function prefixRedirect($id = null) {
+		if (empty($this->request->params['prefix']) && $this->{$this->modelClass}->hasMethod('getPrefix')) {
+			if ($prefix = $this->{$this->modelClass}->getPrefix($id)) {
+				$url = [];
+				foreach (['plugin', 'controller', 'action'] as $k) {
+					if (!empty($this->request->params[$k])) {
+						$url[$k] = $this->request->params[$k];
+					}
+				}
+				foreach (array('pass', 'named') as $k) {
+					if (!empty($this->request->params[$k])) {
+						$url += $this->request->params[$k];
+					}
+				}					
+				$url[$prefix] = true;
+				$this->redirect($url);
+			}
+		}
+		return true;
+	}
+	
+	protected function validateRedirect($type, $args = []) {
 		if (is_array($type)) {
 			foreach ($type as $subType => $args) {
 				if (is_numeric($subType)) {
 					$subType = $args;
-					$args = array();
+					$args = [];
 				}
 				$this->validateRedirect($subType, $args);
 			}

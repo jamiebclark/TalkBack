@@ -3,13 +3,14 @@ App::uses('TalkBackAppModel', 'TalkBack.Model');
 
 class Forum extends TalkBackAppModel {
 	public $name = 'Forum';
-	public $hasMany = array('TalkBack.Topic');
-	public $belongsTo = array(
-		'Channel' => array(
+	public $actsAs = ['TalkBack.HasRead' => ['relatedUnread' => 'Topic']];
+	public $hasMany = ['TalkBack.Topic'];
+	public $belongsTo = [
+		'Channel' => [
 			'className' => 'TalkBack.Channel',
 			'counterCache' => true,
-		)
-	);
+		]
+	];
 	
 /**
  * Determines if a given Commenter ID is an Administrator of the current forum
@@ -38,13 +39,21 @@ class Forum extends TalkBackAppModel {
 	
 	public function findCommenterForums($commenterId = null, $prefix = null) {
 		if ($channelIds = $this->Channel->findCommenterChannelIds($commenterId, $prefix)) {
-			return $this->find('all', array(
-				'conditions' => array(
-					$this->escapeField('channel_id') => $channelIds,
-				)
-			));
+			return $this->find('all', ['conditions' => [$this->escapeField('channel_id') => $channelIds]]);
 		} else {
 			return null;
 		}
+	}
+
+	public function setCurrentCommenter($commenterId = null) {
+		return $this->Topic->setCurrentCommenter($commenterId);
+	}
+
+	public function getPrefix($id) {
+		$channel = $this->find('first', [
+			'contain' => ['Channel'],
+			'conditions' => [$this->escapeField('id') => $id]
+		]);
+		return $channel['Channel']['prefix'];
 	}
 }
