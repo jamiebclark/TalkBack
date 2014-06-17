@@ -69,12 +69,13 @@ class Topic extends TalkBackAppModel {
 		return parent::isCommentable($id, $commenterId, $isAdmin);
 	}
 	
-	public function findSidebar($query = []) {
-		$sidebarTopics = array();
+	public function findUpdatedList($query = []) {
+		$updatedTopics = array();
 		$db = $this->getDataSource();
+		$currentCommenterId = $this->getCurrentCommenterId();
 		$query = Hash::merge([
 			'relatedUnread' => 'Comment',
-			'contain' => ['CurrentCommenterHasRead'],
+			'contain' => !empty($currentCommenterId) ? ['CurrentCommenterHasRead'] : [],
 			'joins' => [
 				[
 					'table' => $db->fullTableName($this->Forum),
@@ -88,7 +89,7 @@ class Topic extends TalkBackAppModel {
 		], $query);
 		
 		// Most recent topics in the forum
-		$sidebarTopics['Last Updated'] = $this->find('all',
+		$updatedTopics['Last Updated'] = $this->find('all',
 			Hash::merge([
 				'contain' => ['LastComment' => ['Commenter']],
 				'order' => ['Topic.modified' => 'DESC']
@@ -96,10 +97,10 @@ class Topic extends TalkBackAppModel {
 		);
 			
 		// Most recent comments in the forum
-		$sidebarTopics['Recently Added'] = $this->find('all', 
+		$updatedTopics['Recently Added'] = $this->find('all', 
 			Hash::merge(['order' => ['Topic.created' => 'DESC']], $query)
 		);
-		return $sidebarTopics;
+		return $updatedTopics;
 	}
 	
 	public function getPrefix($id) {

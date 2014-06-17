@@ -6,7 +6,56 @@ class CommentHelper extends TalkBackAppHelper {
 		'Html', 
 		'TalkBack.Commenter',
 		'Layout.DisplayText',
+		'Layout.Calendar',
+		'Text',
 	);
+	
+	public function quote($result, $options = []) {
+		$options = array_merge([
+			'alias' => 'Comment',
+			'url' => true,
+			'truncate' => 100,
+			'before' => '',
+			'after' => '',
+			'empty' => '',
+		], $options);
+		extract($options);
+		
+		$comment = !empty($result[$alias]) ? $result[$alias] : $result;
+		if (!empty($comment['Commenter'])) {
+			$commenter = $comment['Commenter'];
+		} else if (!empty($result['Commenter'])) {
+			$commenter = $result['Commenter'];
+		} else {
+			$commenter = null;
+		}
+		
+		if (empty($result) || !isset($result['body'])) {
+			return $empty;
+		}
+		
+		if ($url === true) {
+			$url = [
+				'controller' => 'comments',
+				'action' => 'view',
+				$comment['id'],
+				'plugin' => 'talk_back',
+			];
+		}
+
+		$out = '"' . $this->Text->truncate($comment['body'], $truncate) . '"';
+		$out .= '<footer>';
+		if (!empty($commenter)) {
+			$out .= $this->Commenter->name($commenter) . '<br/>';
+		}
+		$out .= $this->Calendar->niceShort($comment['created']);
+		$out .= '</footer>';
+		
+		return $this->Html->link($before . $out . $after, $url, [
+			'escape' => false,
+			'class' => 'tb-topic-comment-quote'
+		]);
+	}
 	
 	public function urlArray($url = array()) {
 		return parent::urlArray($url + array('controller' => 'comments'));

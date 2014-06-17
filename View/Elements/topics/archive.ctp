@@ -21,21 +21,10 @@ foreach ($topics as $topic):
 		$this->Calendar->niceShort($topic['Topic']['created'])
 	);
 	
-	$lastUrl = array('controller' => 'topics', 'action' => 'view', $topic['Topic']['id'], 'page' => 'last');
-	if (!empty($topic['LastComment'])) {
-		$lastCommented = '"' . $this->Text->truncate($topic['LastComment']['body']) . '"';
-		if (!empty($topic['LastComment']['Commenter'])) {
-			$lastCommented .= '<br/>' . $this->Commenter->name($topic['LastComment']['Commenter']);
-		}
-		$lastCommented .= '<br/>' . $this->Calendar->niceShort($topic['LastComment']['created']);
-		$lastCommented = $this->Html->link($lastCommented, $lastUrl, ['escape' => false]);
-	} else {
-		$lastCommented = '&nbsp;';
-	}
-	
 	$this->Table->cells([[
 			$content,
 			'Topics',
+			['class' => 'tb-topics-archive-topic']
 		], [
 			$this->Html->tag('span', 
 				number_format($topic['Topic']['comment_count']),
@@ -44,11 +33,16 @@ foreach ($topics as $topic):
 			'Replies',
 			['class' => 'text-center']
 		], [
-			$lastCommented,
+			$this->Comment->quote($topic['LastComment'], [
+				'alias' => 'LastComment',
+				'empty' => '&nbsp;',
+			]),
 			'Last Commented',
+			['class' => 'tb-topics-archive-comment']
 		]], compact('class'));
 endforeach;
 
 echo $this->Table->output([
 	'empty' => $this->Html->div('jumbotron', 'No topics posted yet'),
+	'class' => 'tb-topics-archive',
 ]);

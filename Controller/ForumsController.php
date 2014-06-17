@@ -31,7 +31,7 @@ class ForumsController extends TalkBackAppController {
 			)
 		);
 		$this->set('topics', $this->paginate('Topic'));		
-		$this->set('sidebarTopics', $this->Forum->Topic->findSidebar([
+		$this->set('updatedTopics', $this->Forum->Topic->findUpdatedList([
 			'conditions' => ['Forum.id' => $id]
 		]));
 	}

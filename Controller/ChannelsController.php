@@ -25,7 +25,7 @@ class ChannelsController extends TalkBackAppController {
 		if (empty($id)) {
 			$this->redirect(['action' => 'index']);
 		}
-		$this->set('sidebarTopics', $this->Channel->Forum->Topic->findSidebar([
+		$this->set('updatedTopics', $this->Channel->Forum->Topic->findUpdatedList([
 			'conditions' => ['Forum.channel_id' => $id]
 		]));
 		

@@ -46,6 +46,7 @@ foreach ($forums as $forum):
 				array('controller' => 'channels', 'action' => 'view', $channel['id'], 'plugin' => 'talk_back')
 			),
 			'Channel',
+			'channel',
 		), array(
 			$topics,
 			'Topics',

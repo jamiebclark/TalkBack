@@ -61,7 +61,7 @@ class TopicsController extends TalkBackAppController {
 		
 		// Sidebar elements
 		// -------------------------------
-		$this->set('sidebarTopics', $this->Topic->findSidebar([
+		$this->set('updatedTopics', $this->Topic->findUpdatedList([
 			'conditions' => ['Topic.forum_id' => $topic['Topic']['forum_id']]
 		]));
 	}
