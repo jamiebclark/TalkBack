@@ -117,6 +117,7 @@ class CommentableBehavior extends TalkBackBehavior {
 			//'contain' => array('CurrentCommenterHasRead'),
 			'conditions' => array(
 				'Comment.model' => $this->settings[$Model->alias]['className'],
+				'Comment.foreign_key' => $modelId,
 			)
 		);
 		if (!empty($modelId)) {

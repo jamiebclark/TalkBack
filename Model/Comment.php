@@ -47,6 +47,7 @@ class Comment extends TalkBackAppModel {
 		return parent::beforeSave($options);
 	}
 	
+
 	public function afterSave($created, $options = array()) {
 		$result = $this->read(null, $this->id);
 		$result = $result[$this->alias];
@@ -227,6 +228,11 @@ class Comment extends TalkBackAppModel {
 	}
 	
 	public function sendEmailUpdate($id, $blockCommenterIds = array()) {
+		$comment = $this->find('first', array(
+			'contain' => array('Commenter'),
+			'conditions' => array($this->escapeField() => $id)
+		));
+		
 		$query = $this->getCommentersAssociation($id);
 		
 		// Makes sure the Commenter is not the one having sent the message
@@ -248,13 +254,9 @@ class Comment extends TalkBackAppModel {
 		if (!empty($blockCommenterIds)) {
 			$query['conditions'][] = array('NOT' => array('Commenter.id' => $blockCommenterIds));
 		}
-		
+
 		$commenters = $this->Commenter->find('all', $query);
-		$comment = $this->find('first', array(
-			'contain' => array('Commenter'),
-			'conditions' => array($this->escapeField('id') => $id)
-		));
-		
+
 		App::uses('TalkBackEmail', 'TalkBack.Network/Email');
 		$Email = new TalkBackEmail();
 		foreach ($commenters as $commenter) {
