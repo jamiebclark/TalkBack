@@ -38,12 +38,12 @@ class CommentersController extends TalkBackAppController {
 	}
 	
 	public function view($id = null) {
-		$this->FindModel->find($id);
+		$this->FormData->findModel($id);
 		$this->layout = 'TalkBack.Commenters/profile';
 	}
 	
 	public function comments($id = null) {
-		$this->FindModel->find($id);
+		$this->FormData->findModel($id);
 		$this->layout = 'TalkBack.Commenters/profile';
 		
 		$this->paginate = array(
@@ -59,7 +59,7 @@ class CommentersController extends TalkBackAppController {
 	}
 	
 	public function	topics($id = null) {
-		$this->FindModel->find($id);
+		$this->FormData->findModel($id);
 		$this->layout = 'TalkBack.Commenters/profile';
 
 		$this->FormData->findModel($id);
