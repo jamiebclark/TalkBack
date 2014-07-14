@@ -127,6 +127,7 @@ class TalkBackSchema extends CakeSchema {
 		'depth' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'model' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 128, 'key' => 'index', 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'foreign_key' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'prefix' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 32, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'commenter_id' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'body' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'deleted' => array('type' => 'boolean', 'null' => false, 'default' => null),

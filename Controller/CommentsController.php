@@ -122,9 +122,12 @@ class CommentsController extends TalkBackAppController {
 	private function getModelUrl($id) {
 		$result = $this->FormData->findModel($id);
 		list($plugin, $model) = pluginSplit($result['Comment']['model']);
-		$url = array('controller' => Inflector::tableize($model), 'action' => 'view', $result['Comment']['foreign_key']);
+		$url = ['controller' => Inflector::tableize($model), 'action' => 'view', $result['Comment']['foreign_key']];
 		$url['plugin'] = !empty($plugin) ? Inflector::underscore($plugin) : false;
 		$url['comment'] = $id;
+		if (!empty($result['Comment']['prefix'])) {
+			$url[$result['Comment']['prefix']] = true;
+		}
 		return $url;
 	}
 
