@@ -12,12 +12,17 @@ if (!is_array($label)) {
 $model = null;
 $modelId = null;
 $currentCommenterId = null;
+$prefix = null;
 
 if (!empty($this->viewVars['commentable']['model'])) {
 	$model = $this->viewVars['commentable']['model'];
 }
 if (!empty($this->viewVars['commentable']['modelId'])) {
 	$modelId = $this->viewVars['commentable']['modelId'];
+}
+
+if (!empty($this->request->params['prefix'])) {
+	$prefix = $this->request->params['prefix'];
 }
 
 if ($isLoggedIn = !empty($currentCommenter['Commenter'])) {
@@ -63,6 +68,7 @@ if ($isLoggedIn = !empty($currentCommenter['Commenter'])) {
 		echo $this->Form->hidden('model', array('default' => $model));
 		echo $this->Form->hidden('foreign_key', array('default' => $modelId));
 		echo $this->Form->hidden('commenter_id', array('default' => $currentCommenterId));
+		echo $this->Form->hidden('prefix', array('default' => $prefix));
 		echo $this->Form->hidden('parent_id');
 
 		
