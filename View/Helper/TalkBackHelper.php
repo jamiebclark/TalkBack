@@ -1,14 +1,14 @@
 <?php
 class TalkBackHelper extends AppHelper {
 	public $name = 'TalkBack';
-	public $helpers = array('Html', 'TalkBack.Commenter');
+	public $helpers = ['Html', 'TalkBack.Commenter'];
 	
-	public function commentTitle($result, $options = array()) {
-		$options = array_merge(array(
+	public function commentTitle($result, $options = []) {
+		$options = array_merge([
 			'tag' => 'h5',
 			'class' => '',
 			'isAdmin' => false,
-		), $options);
+		], $options);
 		$options = $this->Html->addClass($options, 'tb-comment-title');
 		extract($options);
 		$comment = !empty($result['Comment']) ? $result['Comment'] : $result;
@@ -17,16 +17,16 @@ class TalkBackHelper extends AppHelper {
 
 		$out = $this->Commenter->link($commenter) . ' ';
 		if ($isAdmin || ($comment['commenter_id'] == $this->_View->viewVars['tbCommenterId'])) {
-			$url = array('controller' => 'comments', $comment['id'], 'plugin' => 'talk_back');
+			$url = ['controller' => 'comments', $comment['id'], 'plugin' => 'talk_back'];
 			$out .= sprintf('(%s) (%s) ', 
 				$this->Html->link(
 					'Edit', 
-					$url + array('action' => 'edit'),
-					array('class' => 'ajax-modal', 'data-modal-title' => 'Edit Reply')
+					$url + ['action' => 'edit'],
+					['class' => 'ajax-modal', 'data-modal-title' => 'Edit Reply']
 				),
 				$this->Html->link(
 					'Remove', 
-					$url + array('action' => 'delete'),
+					$url + ['action' => 'delete'],
 					null,
 					'Remove this comment?'
 				)
