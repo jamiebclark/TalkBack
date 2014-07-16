@@ -2,13 +2,13 @@
 App::uses('TalkBackAppHelper', 'TalkBack.View/Helper');
 class CommentHelper extends TalkBackAppHelper {
 	public $name = 'TalkBack';
-	public $helpers = array(
+	public $helpers = [
 		'Html', 
 		'TalkBack.Commenter',
 		'Layout.DisplayText',
 		'Layout.Calendar',
 		'Text',
-	);
+	];
 	
 	public function quote($result, $options = []) {
 		$options = array_merge([
@@ -57,16 +57,24 @@ class CommentHelper extends TalkBackAppHelper {
 		]);
 	}
 	
-	public function urlArray($url = array()) {
-		return parent::urlArray($url + array('controller' => 'comments'));
+	public function urlArray($url = []) {
+		return parent::urlArray($url + ['controller' => 'comments']);
 	}
 	
-	public function title($result, $options = array()) {
-		$options = array_merge(array(
+	public function parentLink($result) {
+		$comment = !empty($result['Comment']) ? $result['Comment'] : $result;
+		return $this->Html->link(
+			sprintf('Parent: %s #%d', $comment['model'], $comment['foreign_key']),
+			['controller' => 'comments', 'action' => 'view', $comment['id']]
+		);
+	}
+
+	public function title($result, $options = []) {
+		$options = array_merge([
 			'tag' => 'h5',
 			'class' => '',
 			'isAdmin' => false,
-		), $options);
+		], $options);
 		$options = $this->Html->addClass($options, 'tb-comment-title');
 		extract($options);
 		$comment = !empty($result['Comment']) ? $result['Comment'] : $result;
@@ -83,16 +91,16 @@ class CommentHelper extends TalkBackAppHelper {
 
 		$out = $this->Commenter->link($commenter) . ' ';
 		if ($isAdmin || $isCurrentCommenter) {
-			$url = $this->urlArray(array($comment['id']));
+			$url = $this->urlArray([$comment['id']]);
 			$out .= sprintf('(%s) (%s) ', 
 				$this->Html->link(
 					'Edit', 
-					array('action' => 'edit') + $url,
-					array('class' => 'ajax-modal', 'data-modal-title' => 'Edit Reply')
+					['action' => 'edit'] + $url,
+					['class' => 'ajax-modal', 'data-modal-title' => 'Edit Reply']
 				),
 				$this->Html->link(
 					'Remove', 
-					array('action' => 'delete') + $url,
+					['action' => 'delete'] + $url,
 					null,
 					'Remove this comment?'
 				)
@@ -102,7 +110,7 @@ class CommentHelper extends TalkBackAppHelper {
 		return $this->Html->tag($tag, $out, compact('class', 'id'));
 	}
 	
-	public function body($comment, $options = array()) {
+	public function body($comment, $options = []) {
 		if (is_array($comment)) {
 			$comment = isset($comment['Comment']) ? $comment['Comment']['body'] : $comment['body'];
 		}

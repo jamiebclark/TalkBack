@@ -8,7 +8,7 @@ class CommentsController extends TalkBackAppController {
 		$this->setValidateRedirectMethod('editable', function($args) {
 			if (!$this->Comment->isEditable($args['id'], $this->Auth->user('id'), $this->CurrentCommenter->isAdmin())) {
 				$msg = 'Sorry you do not have permission to edit this';
-				$redirect = array('view' => $args['id']);
+				$redirect = ['view' => $args['id']];
 			}
 			return compact('msg', 'redirect');
 		});
@@ -39,7 +39,7 @@ class CommentsController extends TalkBackAppController {
 			if (method_exists($this, $action)) {
 				$this->view = $action;
 				$this->request->params['action'] = $action;
-				//return call_user_func_array(array($this, $action), $this->request->params['pass']);
+				//return call_user_func_array([$this, $action], $this->request->params['pass']);
 			}
 		}
 		return parent::beforeFilter();
@@ -52,9 +52,9 @@ class CommentsController extends TalkBackAppController {
 			throw NotFoundException('The associated model could not be loaded');
 		}
 		
-		$this->Commentable = $this->Components->load('TalkBack.Commentable', array(
+		$this->Commentable = $this->Components->load('TalkBack.Commentable', [
 			'modelClass' => $model,
-		));
+		]);
 		$this->Commentable->initialize($this);
 		
 		if (!($modelResult = $Model->read(null, $foreignKey))) {
@@ -103,7 +103,7 @@ class CommentsController extends TalkBackAppController {
 	public function delete($id = null) {
 		$this->validateRedirect(array('login', 'editable' => compact('id')));
 		$url = $this->getModelUrl($id);
-		$this->FormData->deleteData($id, array('redirect' => $url));		
+		$this->FormData->deleteData($id, ['redirect' => $url]);		
 	}
 	
 	public function _setFormElements() {

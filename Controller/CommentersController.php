@@ -11,19 +11,19 @@ class CommentersController extends TalkBackAppController {
 		$displayField = 'Commenter.' . $this->Commenter->displayField;
 		
 		if (!empty($q)) {
-			$query = array(
-				'fields' => array(
+			$query = [
+				'fields' => [
 					"$idField AS value",
 					"$displayField AS label",
-				),
-				'conditions' => array(
-					'OR' => array(
-						array($displayField . ' LIKE' => "$q%"),
-						array($displayField . ' LIKE' => "%$q%"),
-					)
-				),
+				],
+				'conditions' => [
+					'OR' => [
+						[$displayField . ' LIKE' => "$q%"],
+						[$displayField . ' LIKE' => "%$q%"],
+					]
+				],
 				'limit' => 10,
-			);
+			];
 			$commenters = $this->Commenter->find('all', $query);
 			$json = Hash::extract($commenters, '{n}.Commenter');
 			$json = Hash::remove($json, '{n}.id');
@@ -34,26 +34,42 @@ class CommentersController extends TalkBackAppController {
 		
 		$this->viewClass = 'Json';
 		$this->set(compact('json'));
-		$this->set('_serialize', array('json'));
+		$this->set('_serialize', ['json']);
 	}
 	
 	public function view($id = null) {
 		$this->FormData->findModel($id);
-		$this->layout = 'TalkBack.Commenters/profile';
+		//$this->layout = 'TalkBack.Commenters/profile';
+
+		$this->paginate = [
+			'Comment' => [
+				'conditions' => [
+					'Comment.prefix' => $this->tb_prefix,
+					'Comment.commenter_id' => $id,
+				]
+			]
+		];
+		$this->set('comments', $this->paginate('Comment'));
 	}
-	
+
+	public function edit() {
+		$this->validateRedirect('loggedIn');
+		$id = $this->CurrentCommenter->getId();
+		$this->FormData->editData($id);
+		$this->render('/Elements/commenters/form');
+	}
+	/*
 	public function comments($id = null) {
 		$this->FormData->findModel($id);
 		$this->layout = 'TalkBack.Commenters/profile';
 		
-		$this->paginate = array(
-			'Comment' => array(
-				'conditions' => array(
-					'Comment.commenter_id' => $id,
-				),
-				'order' => array('Comment.created' => 'DESC'),
-			)
-		);
+		$this->paginate = [
+			'Comment' => [
+				'conditions' => ['Comment.commenter_id' => $id],
+				'order' => ['Comment.created' => 'DESC'],
+			]
+		];
+
 		$this->set('comments', $this->paginate('Comment'));	
 		$this->render('/Elements/comments/archive');
 	}
@@ -63,18 +79,17 @@ class CommentersController extends TalkBackAppController {
 		$this->layout = 'TalkBack.Commenters/profile';
 
 		$this->FormData->findModel($id);
-		$this->paginate = array(
-			'Topic' => array(
-				'conditions' => array(
-					'Topic.commenter_id' => $id,
-				),
-				'order' => array('Topic.created' => 'DESC'),
-			)
-		);
+		$this->paginate = [
+			'Topic' => [
+				'conditions' => ['Topic.commenter_id' => $id],
+				'order' => ['Topic.created' => 'DESC'],
+			]
+		];
 		$this->set('topics', $this->paginate('Topic'));
 		$this->render('/Elements/topics/archive');
 	}
-	
+	*/
+
 	public function admin_index() {
 	
 	}

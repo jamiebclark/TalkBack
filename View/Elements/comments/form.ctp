@@ -49,49 +49,49 @@ if ($isLoggedIn = !empty($currentCommenter['Commenter'])) {
 <?php endif; ?>
 <div class="media tb-comment">
 	<div class="pull-left">
-		<?php echo $this->Commenter->image($currentCommenter['Commenter'], array(
+		<?php echo $this->Commenter->image($currentCommenter['Commenter'], [
 			'class' => 'media-object tb-comment-thumbnail'
-		)); ?>
+		]); ?>
 	</div>
 	<div class="media-body"><?php
-		echo $this->Form->create('Comment', array(
-			'url' => array(
+		echo $this->Form->create('Comment', [
+			'url' => [
 				'controller' => 'comments',
 				'action' => 'add',
 				$model,
 				$modelId,
 				//$this->params['prefix'] => false,
 				'plugin' => 'talk_back',
-			),
-		));
+			],
+		]);
 		echo $this->Form->hidden('id');
-		echo $this->Form->hidden('model', array('default' => $model));
-		echo $this->Form->hidden('foreign_key', array('default' => $modelId));
-		echo $this->Form->hidden('commenter_id', array('default' => $currentCommenterId));
-		echo $this->Form->hidden('prefix', array('default' => $prefix));
+		echo $this->Form->hidden('model', ['default' => $model]);
+		echo $this->Form->hidden('foreign_key', ['default' => $modelId]);
+		echo $this->Form->hidden('commenter_id', ['default' => $currentCommenterId]);
+		echo $this->Form->hidden('prefix', ['default' => $prefix]);
 		echo $this->Form->hidden('parent_id');
 
 		
-		$textOptions = array(
+		$textOptions = [
 			'placeholder' => 'Your ' . $label['singular'],
 			'rows' => 5,
 			'label' => false,
-		);
+		];
 		if ($isLoggedIn) {
 			echo $this->Form->input('body', $textOptions);
 			
 			/*
 			echo $this->Form->hidden('CommenterEmailControl.id');
-			echo $this->Form->hidden('CommenterEmailControl.commenter_id', array('default' => $currentCommenterId));
-			echo $this->Form->inputs(array(
+			echo $this->Form->hidden('CommenterEmailControl.commenter_id', ['default' => $currentCommenterId]);
+			echo $this->Form->inputs([
 				'legend' => 'Email Settings',
-				'CommenterEmailControl.email_on_reply' => array(
+				'CommenterEmailControl.email_on_reply' => [
 					'label' => 'Email if someone replies',
-				),
-			));
+				],
+			]);
 			*/
 			
-			echo $this->Form->end('Add ' . $label['singular'], array('class' => 'btn btn-primary'));
+			echo $this->Form->end('Add ' . $label['singular'], ['class' => 'btn btn-primary']);
 		} else {
 			$textOptions['placeholder'] = 'Please sign in first';
 			$textOptions['disabled'] = true;

@@ -2,47 +2,50 @@
 App::uses('TalkBackAppModel', 'TalkBack.Model');
 class Commenter extends TalkBackAppModel {
 	public $name = 'Commenter';
-	public $hasMany = array(
-		'Comment' => array(
+	public $hasMany = [
+		'Comment' => [
 			'className' => 'TalkBack.Comment',
 			'foreignKey' => 'commenter_id',
-		),
-		'CommentersMessage' => array(
+		],
+		'CommentersMessage' => [
 			'className' => 'TalkBack.CommentersMessage',
 			'foreignKey' => 'commenter_id',
-		),
-		'CommenterEmailControl' => array(
-			'className' => 'TalkBack.CommenterEmailControl',
-			'foreignKey' => 'commenter_id',
-			'dependent' => true,
-		),
-		'CommenterEmailBlock' => array(
+		],
+		'CommenterEmailBlock' => [
 			'className' => 'TalkBack.CommenterEmailBlock',
 			'foreignKey' => 'commenter_id',
 			'dependent' => true,
-		),
-	);
+		],
+	];
 
-	public $hasAndBelongsToMany = array(
-		'CommenterType' => array(
+	public $hasOne = [
+			'CommenterEmailControl' => [
+			'className' => 'TalkBack.CommenterEmailControl',
+			'foreignKey' => 'commenter_id',
+			'dependent' => true,
+		],
+	];
+
+	public $hasAndBelongsToMany = [
+		'CommenterType' => [
 			'className' => 'TalkBack.Commenter',
 			'joinTable' => 'tb_commenter_types_commenters',
 			'foreignKey' => 'commenter_id',
 			'associationForeignKey' => 'commenter_type_id',
-		),
-		'Channel' => array(
+		],
+		'Channel' => [
 			'className' => 'TalkBack.Channel',
 			'foreignKey' => 'commenter_id',
 			'associationForeignKey' => 'channel_id',
 			'joinTable' => 'tb_channels_commenters',
-		),
-		'ChannelAdmin' => array(
+		],
+		'ChannelAdmin' => [
 			'className' => 'TalkBack.Channel',
 			'foreignKey' => 'commenter_id',
 			'associationForeignKey' => 'channel_id',
 			'joinTable' => 'tb_channel_commenter_admins',
-		),
-	);
+		],
+	];
 	
 	public $recursive = 0;
 	
@@ -53,33 +56,33 @@ class Commenter extends TalkBackAppModel {
 	}
 
 	/*
-	public $hasMany = array(
-		'Comment' => array(
+	public $hasMany = [
+		'Comment' => [
 			'className' => 'TalkBack.Comment',
 			'foreignKey' => 'commenter_id',
-		),
-		'Topic' => array(
+		],
+		'Topic' => [
 			'className' => 'TalkBack.Topic',
 			'foreignKey' => 'commenter_id',
-		),
-		'MessageTo' => array(
+		],
+		'MessageTo' => [
 			'className' => 'TalkBack.Message',
 			'foreignKey' => 'commenter_id',
-		),
-		'MessageFrom' => array(
+		],
+		'MessageFrom' => [
 			'className' => 'TalkBack.Message',
 			'foreignKey' => 'from_commenter_id',
-		),
-		'ReadTopic' => array(
+		],
+		'ReadTopic' => [
 			'className' => 'TalkBack.ReadTopic',
 			'foreignKey' => 'commenter_id',
 			'dependent' => true,
-		),
-		'ReadComment' => array(
+		],
+		'ReadComment' => [
 			'className' => 'TalkBack.ReadComment',
 			'foreignKey' => 'commenter_id',
 			'dependent' => true,
-		)
-	);
+		]
+	];
 	*/
 }

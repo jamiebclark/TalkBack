@@ -2,38 +2,40 @@
 App::uses('TalkBackAppModel', 'TalkBack.Model');
 class Comment extends TalkBackAppModel {
 	public $name = 'Comment';
-	public $order = array('Comment.lft' => 'DESC');
-	public $actsAs = array(
+	public $order = ['Comment.lft' => 'DESC'];
+	public $actsAs = [
 		'Tree',
 		'TalkBack.HasRead',
 		'Containable',
-	);
+	];
 	
-	public $hasMany = array(
-		'CommenterEmailControl' => array(
+	/*
+	public $hasMany = [
+		'CommenterEmailControl' => [
 			'className' => 'TalkBack.CommenterEmailControl',
 			'foreignKey' => 'comment_id',
 			'dependent' => true,
-		),
-	);
+		],
+	];
+	*/
 
-	public $belongsTo = array(
-		'Commenter' => array(
+	public $belongsTo = [
+		'Commenter' => [
 			'className' => 'TalkBack.Commenter',
 			'foreignKey' => 'commenter_id',
-		)
-	);
+		]
+	];
 
-	public $validate = array(
-		'body' => array(
+	public $validate = [
+		'body' => [
 			'rule' => 'notEmpty',
 			'message' => 'Please enter a comment',
-		)
-	);
+		]
+	];
 	
 	private $_parentClassName;
 	
-	public function beforeSave($options = array()) {
+	public function beforeSave($options = []) {
 		if (!empty($this->data[$this->alias])) {
 			$data =& $this->data[$this->alias];
 		} else {
@@ -48,7 +50,7 @@ class Comment extends TalkBackAppModel {
 	}
 	
 
-	public function afterSave($created, $options = array()) {
+	public function afterSave($created, $options = []) {
 		$result = $this->read(null, $this->id);
 		$result = $result[$this->alias];
 		
@@ -93,7 +95,7 @@ class Comment extends TalkBackAppModel {
 	}
 	
 	// Finds the parent result of a given comment id
-	public function findParentModelById($id, $query = array()) {
+	public function findParentModelById($id, $query = []) {
 		$result = $this->read(null, $id);
 		$result = $result[$this->alias];
 		return $this->findParentModel($result['model'], $result['foreign_key'], $query);
@@ -108,15 +110,15 @@ class Comment extends TalkBackAppModel {
 	}
 	
 	// Finds the Parent result of a given model name and foreign key
-	public function findParentModel($modelName, $foreignKey, $query = array()) {
+	public function findParentModel($modelName, $foreignKey, $query = []) {
 		if ($Model = ClassRegistry::init($modelName, true)) {
 			$query['conditions'][$Model->escapeField($Model->primaryKey)] = $foreignKey;
 			if ($result = $Model->find('first', $query)) {
-				$result['modelInfo'] = array(
+				$result['modelInfo'] = [
 					'alias' => $Model->alias,
 					'primaryKey' => $Model->primaryKey,
 					'displayField' => $Model->displayField,
-				);
+				];
 			}
 			return $result;
 		}
@@ -158,7 +160,7 @@ class Comment extends TalkBackAppModel {
 		if ($additionalCommentersModel = $Model->getAdditionalCommentersModel()) {
 			list($plugin, $additionalCommentersModel) = pluginSplit($additionalCommentersModel);
 			$modelResult = $Model->find('first', array(
-				'contain' => array($additionalCommentersModel),
+				'contain' => [$additionalCommentersModel],
 				'conditions' => array(
 					$Model->escapeField($Model->primaryKey) => $result[$this->alias]['foreign_key'],
 				),
@@ -166,7 +168,7 @@ class Comment extends TalkBackAppModel {
 		}
 
 		$query = array(
-			'fields' => array('Commenter.*'),
+			'fields' => ['Commenter.*'],
 			'group' => $this->Commenter->escapeField($this->Commenter->primaryKey),
 		);
 		
@@ -212,24 +214,24 @@ class Comment extends TalkBackAppModel {
 			}
 			$additionalIds = Hash::extract($modelResult, $extract);
 			if (!empty($additionalIds)) {
-				$query['joins'][] = array(
+				$query['joins'][] = [
 					'table' => $this->Commenter->useTable,
 					'alias' => 'AdditionalCommenter',
 					'type' => 'LEFT',
-					'conditions' => array(
+					'conditions' => [
 						'AdditionalCommenter.id = Commenter.id',
 						'AdditionalCommenter.id' => $additionalIds,
-					)
-				);
+					]
+				];
 				$query['conditions']['OR'][]['NOT']['AdditionalCommenter.id'] = null;
 			}		
 		}
 		return $query;
 	}
 	
-	public function sendEmailUpdate($id, $blockCommenterIds = array()) {
+	public function sendEmailUpdate($id, $blockCommenterIds = []) {
 		$comment = $this->find('first', array(
-			'contain' => array('Commenter'),
+			'contain' => ['Commenter'],
 			'conditions' => array($this->escapeField() => $id)
 		));
 		
@@ -240,19 +242,33 @@ class Comment extends TalkBackAppModel {
 			'table' => $this->getTable(),
 			'alias' => 'NewComment',
 			'type' => 'LEFT',
-			'conditions' => array(
+			'conditions' => [
 				'NewComment.id' => $id,
 				'Comment.model = NewComment.model',
 				'Comment.foreign_key = NewComment.foreign_key',
-			)
+			]
 		);
-		$query['conditions']['AND']['OR'] = array(
+		$query['conditions']['AND']['OR'] = [
 			'NewComment.id' => null,
-			'NOT' => array('NewComment.commenter_id = Commenter.id'),
-		);
+			'NOT' => ['NewComment.commenter_id = Commenter.id'],
+		];
 		
+		// Makes sure they haven't turned off reply emails in their settings
+		$query['joins'][] = [
+			'table' => $this->Commenter->CommenterEmailControl->getTable(),
+			'alias' => 'EmailControl',
+			'type' => 'LEFT',
+			'conditions' => ['Commenter.id = EmailControl.commenter_id'],
+		];
+		$query['conditions'][] = [
+			'OR' => [
+				'EmailControl.id' => null,
+				'EmailControl.email_on_reply' => 1,
+			]
+		];
+
 		if (!empty($blockCommenterIds)) {
-			$query['conditions'][] = array('NOT' => array('Commenter.id' => $blockCommenterIds));
+			$query['conditions'][] = ['NOT' => ['Commenter.id' => $blockCommenterIds]];
 		}
 
 		$commenters = $this->Commenter->find('all', $query);
@@ -268,7 +284,7 @@ class Comment extends TalkBackAppModel {
 			$Email->to($to);
 			//TODO: Better human name
 			$Email->subject('New comment posted in ' . Inflector::humanize($comment['Comment']['model']));
-			$Email->helpers(array('TalkBack.Comment', 'Layout.DisplayText'));
+			$Email->helpers(['TalkBack.Comment', 'Layout.DisplayText']);
 			$Email->viewVars(compact('commenter', 'comment'));
 			$Email->template('TalkBack.new_comment');
 			$Email->send();
@@ -284,7 +300,7 @@ class Comment extends TalkBackAppModel {
 
 		$Parent = ClassRegistry::init($parentModel, true);
 		if (method_exists($Parent, $method)) {
-			return call_user_func_array(array($Parent, $method), $args);
+			return call_user_func_array([$Parent, $method], $args);
 		} else {
 			return null;
 		}
