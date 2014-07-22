@@ -9,7 +9,7 @@ class CommentableBehavior extends TalkBackBehavior {
 			'anonymous' => false,			// Does a commenter need to be logged in to comment?
 			'softDelete' => true,			// Should comments be deleted permanently, or simply marked as "deleted"
 			'hasRead' => false,				// Should we track if comments are being read
-			'order' => 'DESC',				// ASC or DESC to order the lft field, or set an array for custom sort
+			'order' => 'ASC',				// ASC or DESC to order the lft field, or set an array for custom sort
 			'creatorField' => null,			// The field of the commenter creating this item, to include them in 
 											// any conversation
 			'additionalCommentersModel' => null,		// An additional model that stores additional commenters part of 
