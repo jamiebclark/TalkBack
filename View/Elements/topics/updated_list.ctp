@@ -1,7 +1,8 @@
 <?php if (!empty($updatedTopics)): ?>
 	<?php foreach ($updatedTopics as $title => $sidebarTopicResult): ?>
 		<?php if (empty($sidebarTopicResult)): ?>
-			<div class="lead"><em>No topics to display</div>
+			<?php // Empty display ?>
+			<?php // <div class="lead"><em>No topics to display</div> ?>
 		<?php else: ?>
 			<div class="box box-list">
 				<h3 class="box-header"><?php echo $title; ?></h3>
