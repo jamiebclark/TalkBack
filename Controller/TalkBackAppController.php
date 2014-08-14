@@ -11,6 +11,7 @@ class TalkBackAppController extends AppController {
 	//public $helpers = array('TalkBack.TalkBack');
 	protected $tb_prefix;
 
+	// Stores the controller-specific validation redirect methods
 	private $_validationRedirectMethods = [];
 	
 	public function beforeFilter() {
@@ -72,6 +73,14 @@ class TalkBackAppController extends AppController {
 		return true;
 	}
 	
+/**
+ * Expandable function for validating on various terms, and redirecting if any of those checks are failed
+ *
+ * @param string|Array $type The name of the validation method to check. Can also pass an array of terms
+ * @param Array $args The arguments necessary to pass along
+ * 
+ * @return bool True if validation passes, redirects if false
+ **/
 	protected function validateRedirect($type, $args = []) {
 		if (is_array($type)) {
 			foreach ($type as $subType => $args) {
@@ -83,14 +92,17 @@ class TalkBackAppController extends AppController {
 			}
 		} else {
 			switch ($type) {
+
+				// Checks if the user is logged in
 				case 'login':
 					if (!$this->Auth->loggedIn()) {
 						$msg = 'Please log in first';
 						$redirect = $this->Auth->redirectUrl();
 					}
 				break;
+
+				// Looks for a function called "isCommenterAllowed" to check for permission on current page
 				case 'permission':
-					//Looks for a function called "isCommenterAllowed" to check for permission on current page
 					if ($this->{$this->modelClass}->hasMethod('isCommenterAllowed')) {
 						if (!$this->{$this->modelClass}->isCommenterAllowed(
 							$args[0],
@@ -102,6 +114,8 @@ class TalkBackAppController extends AppController {
 						}
 					}
 				break;
+
+				// Checks for controller-specific methods
 				default:
 					if (!empty($this->_validationRedirectMethods[$type])) {
 						$return = call_user_func($this->_validationRedirectMethods[$type], $args);

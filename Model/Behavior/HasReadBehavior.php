@@ -32,7 +32,7 @@ class HasReadBehavior extends TalkBackBehavior {
 			if (is_object($Model->{$relatedUnread})) {
 				$RelatedModel = $Model->{$relatedUnread};
 			} else {
-				$RelatedModel = ClassRegistry::init($Model->{$relatedUnread}, true);
+				$RelatedModel = ClassRegistry::init($relatedUnread, true);
 			}
 			if (empty($RelatedModel)) {
 				throw new Exception('Could not find association of ' . $relatedUnread);

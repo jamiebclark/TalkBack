@@ -5,6 +5,8 @@ class TopicsController extends TalkBackAppController {
 	public $components = array('TalkBack.Commentable');
 	
 	public function beforeFilter() {
+
+		// Checks user permissions for the forum
 		$this->setValidateRedirectMethod('forumPermission', function($args) {
 			if (!$this->Topic->Forum->isCommenterAllowed(
 				$args[0],
@@ -16,7 +18,8 @@ class TopicsController extends TalkBackAppController {
 			}
 			return compact('msg', 'redirect');
 		});
-				
+
+		// Checks if a Forum ID has been passed to the view
 		$this->setValidateRedirectMethod('hasForum', function($args) {
 			if (empty($this->request->data['Topic']['forum_id']) && empty($args['forumId'])) {
 				$msg = 'Please select a forum before adding a topic';
@@ -24,6 +27,8 @@ class TopicsController extends TalkBackAppController {
 			}
 			return compact('msg', 'redirect');
 		});
+
+		// Checks if the topic is editable
 		$this->setValidateRedirectMethod('editable', function($args) {
 			if (!$this->Topic->isEditable($args['id'], $this->Auth->user('id'), $this->isAdmin())) {
 				$msg = 'Sorry you do not have permission to edit this';
@@ -76,7 +81,7 @@ class TopicsController extends TalkBackAppController {
 				)
 			)
 		));	
-		$this->render('elements/topics/form');
+		$this->render('Elements/topics/form');
 	}
 
 	public function edit($id = null) {
