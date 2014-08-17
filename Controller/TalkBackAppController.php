@@ -11,6 +11,8 @@ class TalkBackAppController extends AppController {
 	//public $helpers = array('TalkBack.TalkBack');
 	protected $tb_prefix;
 
+	public $layout = 'default_talkback';
+
 	// Stores the controller-specific validation redirect methods
 	private $_validationRedirectMethods = [];
 	
