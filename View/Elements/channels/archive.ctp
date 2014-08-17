@@ -14,10 +14,10 @@ foreach ($channels as $channel):
 			),
 			'Channel',
 		), array(
-			number_format($channel['Channel']['forum_count']),
+			$this->Html->tag('font', number_format($channel['Channel']['forum_count']), array('class' => 'badge badge-default')),
 			'Forums',
 		), array(
-			number_format($channel['Channel']['topic_count']),
+			$this->Html->tag('font', number_format($channel['Channel']['topic_count']), array('class' => 'badge badge-default')),
 			'Topics',
 		)
 	), true);
