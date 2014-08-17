@@ -41,14 +41,19 @@ class TopicsController extends TalkBackAppController {
 	}
 	
 	public function index($channelId = null) {
-		$this->redirect(array('controller' => 'channels', 'action' => 'view', $channelId));		
+		$redirect = array('controller' => 'channels', 'action' => 'view', $channelId);
+		if (!empty($this->request->params['prefix'])) {
+			$redirect[$this->request->params['prefix']] = true;
+		}
+		if (empty($channelId)) {
+			$redirect['action'] = 'index';
+		}
+		$this->redirect($redirect);
 	}
 	
 	public function view($id = null) {
 		$this->prefixRedirect($id);
-		
 		$this->validateRedirect(array('permission' => array($id)));
-
 		$topic = $this->FormData->findModel($id, null, array(
 			'contain' => array(
 				'Forum' => array('Channel'),
