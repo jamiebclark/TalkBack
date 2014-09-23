@@ -1,0 +1,19 @@
+.empty-msg {
+	padding: $padding-large-vertical $padding-large-horizontal;
+	color: $gray;
+}
+
+.tb-description {
+	padding: $padding-base-vertical $padding-base-horizontal;
+	font-style: italic;
+}
+.tb-archive {
+	border: $comment-border;
+	border-radius: $comment-border-radius;
+	min-height: 300px;
+	margin-bottom: $line-height-computed;
+	
+	> div, > table {
+		margin-bottom: 0;
+	}
+}

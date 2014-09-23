@@ -22,4 +22,7 @@ foreach ($channels as $channel):
 		)
 	), true);
 endforeach;
-echo $this->Table->output();
+echo $this->Table->output(array(
+	'empty' => '<div class="empty-msg">No channels posted yet</div>',
+	'class' => 'table tb-archive tb-channels-archive'
+));

@@ -1,5 +1,9 @@
 <?php
-$this->Table->reset();
+if (!isset($skip)) {
+	$skip = ['channel'];
+}
+
+$this->Table->reset(compact('skip'));
 if (!empty($forums['Channel'])) {
 	$passChannel = $forums['Channel'];
 }
@@ -33,7 +37,7 @@ foreach ($forums as $forum):
 		$title .= ' ' . $this->Html->link(
 			number_format($totalUnread) . ' new!',
 			$url,
-			['class' => 'label label-success']
+			['class' => 'pull-right label label-success']
 		);
 	}
 	$this->Table->cells(array(
@@ -46,10 +50,12 @@ foreach ($forums as $forum):
 				array('controller' => 'channels', 'action' => 'view', $channel['id'], 'plugin' => 'talk_back')
 			),
 			'Channel',
+			null,
 			'channel',
 		), array(
 			$topics,
 			'Topics',
+			//'Channel.topic_count',
 			array('class' => 'text-center'),
 		), array(
 			$this->Html->tag('span',
@@ -57,8 +63,13 @@ foreach ($forums as $forum):
 				array('class' => 'badge')
 			),				
 			'Comments',
+			//'Channel.comment_count',
 			array('class' => 'text-center'),
 		),
 	), true);
 endforeach;
-echo $this->Table->output(array('paginate' => true));
+echo $this->Table->output(array(
+	'paginate' => true,
+	'empty' => $this->Html->div('empty-msg', 'No forums have been added for this channel yet'),
+	'div' => 'tb-archive tb-forums-archive',
+));

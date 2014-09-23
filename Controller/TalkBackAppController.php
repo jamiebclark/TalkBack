@@ -105,6 +105,7 @@ class TalkBackAppController extends AppController {
 
 				// Looks for a function called "isCommenterAllowed" to check for permission on current page
 				case 'permission':
+					/*
 					if ($this->{$this->modelClass}->hasMethod('isCommenterAllowed')) {
 						if (!$this->{$this->modelClass}->isCommenterAllowed(
 							$args[0],
@@ -115,6 +116,7 @@ class TalkBackAppController extends AppController {
 							$redirect = true;
 						}
 					}
+					*/
 				break;
 
 				// Checks for controller-specific methods

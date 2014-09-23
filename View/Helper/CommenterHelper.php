@@ -20,13 +20,20 @@ class CommenterHelper extends TalkBackAppHelper {
 		return '';
 	}
 	
-	public function link($commenter = array()) {
+	public function link($commenter = array(), $options = array()) {
+		$options = array_merge(array(
+			'prefix' => false,
+		), $options);
+
+		$url = array('controller' => 'commenters', 'action' => 'view', $commenter['id'], 'plugin' => 'talk_back');
+		if ($options['prefix'] === false) {
+			$url += Prefix::reset();
+		} else if ($options['prefix'] !== true) {
+			$url[$options['prefix']] = true;
+		}
+
 		$commenter = !empty($commenter['Commenter']) ? $commenter['Commenter'] : $commenter;
-		return $this->Html->link(
-			$this->name($commenter),
-			array('controller' => 'commenters', 'action' => 'view', $commenter['id'], 'plugin' => 'talk_back') + Prefix::reset(),
-			array('class' => 'tb-commenter-link')
-		);
+		return $this->Html->link($this->name($commenter), $url, array('class' => 'tb-commenter-link'));
 	}
 	
 	public function name($commenter = []) {

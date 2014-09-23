@@ -15,6 +15,41 @@ class Topic extends TalkBackAppModel {
 	
 	public $order = ['Topic.sticky' => 'DESC', 'Topic.created' => 'DESC'];
 
+	public $validate = [
+		'title' => [
+			'rule' => 'notEmpty',
+			'message' => 'Please give the topic a title',
+		]
+	];
+
+/**
+ * Stores the topic id to be updated after a topic is deleted
+ * @var int
+ **/
+	private $_updateTopicId = null;
+
+	public function afterSave($created, $options = array()) {
+		if ($created) {
+			$result = $this->read();
+			$this->Forum->setTopicCount($result[$this->alias]['forum_id']);
+		}
+		return parent::afterSave($created, $options);
+	}
+
+	public function beforeDelete($cascade = true) {
+		$result = $this->read();
+		$this->_updateTopicId = $result[$this->alias]['topic_id'];
+		return parent::beforeDelete($cascade);
+	}
+
+	public function afterDelete() {
+		if (!empty($this->_updateTopicId)) {
+			$this->Forum->setTopicCount($this->_updateTopicId);
+			$this->_updateTopicId = null;
+		}
+		return parent::afterDelete();
+	}
+
 /**
  * Determines if a given Commenter ID has sufficient permissions to view a Topic
  * 

@@ -48,7 +48,7 @@ extract(array_merge($default, compact(array_keys($default))));
 <?php echo $this->Paginator->pagination(); ?>
 </div>
 
-<?php $this->Asset->blockStart(); ?>
+<?php $this->Html->scriptStart(array('inline' => false)); ?>
 $(window).load(function() {
 	var $active = $('.tb-comment-archive .active');
 	if ($active.length) {
@@ -57,4 +57,4 @@ $(window).load(function() {
 		});
 	}
 });
-<?php $this->Asset->blockEnd(); ?>
+<?php $this->Html->scriptEnd(); ?>

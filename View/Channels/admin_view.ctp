@@ -7,11 +7,11 @@
 	<div class="col-md-8">
 		<h2><?php echo $channel['Channel']['title']; ?></h2>
 		<?php echo $channel['Channel']['description']; ?>
-		<h2>Forums</h2>
+		<h3>Forums</h3>
 		<?php echo $this->element('forums/archive-admin'); ?>
 	</div>
 	<div class="col-md-4">
-		<h2>Permissions</h2>
+		<h3>Permissions</h3>
 		<p>The channel can only be seen by the following combination of credentials</p>
 		
 		<?php if (!empty($channel['Channel']['prefix'])): ?>

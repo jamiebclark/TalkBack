@@ -76,6 +76,7 @@ class CurrentCommenterComponent extends Component {
 		}
 		$this->_isAdmin = $val;
 		$this->controller->tb_currentControllerIsAdmin = $val;
+		$this->controller->set('currentCommenterIsAdmin', $val);
 		
 		if (!empty($this->_commenter)) {
 			$this->_commenter[0]['isAdmin'] = $val;

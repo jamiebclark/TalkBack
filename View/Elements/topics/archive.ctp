@@ -2,16 +2,18 @@
 $this->Table->reset();
 foreach ($topics as $topic):
 	$class = null;
+	$url = ['controller' => 'topics', 'action' => 'view', $topic['Topic']['id']];
+
 	if (isset($topic['CurrentCommenterHasRead']) && empty($topic['CurrentCommenterHasRead']['id'])) {
 		$class = 'unread';
 	}
 	
-	$title = $this->Html->link($topic['Topic']['title'], ['controller' => 'topics', 'action' => 'view', $topic['Topic']['id']]);
+	$title = $this->Html->link($topic['Topic']['title'], $url);
 	if (!empty($topic[0]['total_unread'])) {
 		$title .= $this->Html->tag('span', '+' . $topic[0]['total_unread'], ['class' => 'label label-success pull-right']);
 	}
 	
-	$content = $this->Html->tag('h4', $title);
+	$content = $this->Html->tag('h4', $title, ['class' => 'tb-topics-archive-title']);
 	$content .= $this->DisplayText->text($topic['Topic']['body'], [
 		'firstParagraph' => true,
 		'truncate' => 100,
@@ -26,8 +28,9 @@ foreach ($topics as $topic):
 			'Topics',
 			['class' => 'tb-topics-archive-topic']
 		], [
-			$this->Html->tag('span', 
+			$this->Html->link(
 				number_format($topic['Topic']['comment_count']),
+				$url + ['#' => 'comments'],
 				['class' => 'badge']
 			),
 			'Replies',
@@ -43,6 +46,6 @@ foreach ($topics as $topic):
 endforeach;
 
 echo $this->Table->output([
-	'empty' => $this->Html->div('jumbotron', 'No topics posted yet'),
-	'class' => 'tb-topics-archive',
+	'empty' => $this->Html->div('empty-msg', 'No topics posted yet'),
+	'div' => 'tb-archive tb-topics-archive',
 ]);

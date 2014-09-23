@@ -17,11 +17,11 @@ $stamp = strtotime($topic['Topic']['created']);
 <div class="row">
 	<div class="col-md-8">
 		<?php 
-		echo $this->element('topics/crumbs');
-		echo $this->Html->getCrumbs();
+		//echo $this->element('topics/crumbs');
+		//echo $this->Html->getCrumbs();
 		?>
 		<div class="tb-topic-view">
-			<div class="tb-comment original-comment jumbotron">
+			<div class="tb-comment original-comment">
 				<h4 class="tb-comment-title"><?php echo $topic['Topic']['title']; ?></h4>
 				<?php echo $this->DisplayText->text($topic['Topic']['body']); ?>
 				<h5>

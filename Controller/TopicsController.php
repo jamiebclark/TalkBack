@@ -30,7 +30,7 @@ class TopicsController extends TalkBackAppController {
 
 		// Checks if the topic is editable
 		$this->setValidateRedirectMethod('editable', function($args) {
-			if (!$this->Topic->isEditable($args['id'], $this->Auth->user('id'), $this->isAdmin())) {
+			if (!$this->Topic->isEditable($args['id'], $this->Auth->user('id'), $this->CurrentCommenter->isAdmin())) {
 				$msg = 'Sorry you do not have permission to edit this';
 				$redirect = array('view' => $args['id']);
 			}
@@ -68,7 +68,12 @@ class TopicsController extends TalkBackAppController {
 
 		$this->Commentable->setComments($id, 10);
 		$this->set(compact('isCommentable'));
-		
+		$this->set('isEditable', $this->Topic->isEditable(
+			$id, 
+			$this->Auth->user('id'), 
+			$this->CurrentCommenter->isAdmin()
+		));
+
 		// Sidebar elements
 		// -------------------------------
 		$this->set('updatedTopics', $this->Topic->findUpdatedList([

@@ -13,6 +13,11 @@ foreach ($forums as $forum):
 				array('controller' => 'channels', 'action' => 'view', $forum['Channel']['id'], 'plugin' => 'talk_back')
 			),
 			'Channel',
+			'Channel.title',
+		), array(
+			$forum['Forum']['private'] ? '<span class="label label-danger">Yes</span>' : '<span class="label label-default">No</span>',
+			'Private',
+			'Forum.private',
 		), array(
 			$this->ModelView->actionMenu(array('view', 'edit', 'delete'), $forum['Forum']),
 			'Actions',

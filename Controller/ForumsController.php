@@ -36,17 +36,21 @@ class ForumsController extends TalkBackAppController {
 		]));
 	}
 	
+	public function add($channelId = null) {
+		$this->FormData->addData(array(
+			'default' => array(
+				'Forum' => array('channel_id' => $channelId)
+			)
+		));
+	}
+
 	public function admin_index() {
 		$this->set('forums', $this->paginate());
 	}
 	
 	public function admin_view($id = null) {
-		$this->FormData->findModel($id);
-		$this->paginate = array(
-			'Topic' => array(
-				'conditions' => array('Topic.forum_id' => $id)
-			)
-		);
+		$result = $this->FormData->findModel($id, ['contain' => ['Commenter', 'CommenterType']]);
+		$this->paginate = ['Topic' => ['conditions' => ['Topic.forum_id' => $id]]];
 		$this->set('topics', $this->paginate('Topic'));
 	}
 
@@ -68,6 +72,9 @@ class ForumsController extends TalkBackAppController {
 	
 	public function _setFormElements() {
 		$channels = $this->Forum->Channel->find('list');
-		$this->set(compact('channels'));
+		$commenterTypes = $this->Forum->CommenterType->find('list');
+		$commenters = $this->FormData->findHabtmList('Commenter');
+
+		$this->set(compact('channels', 'commenterTypes', 'commenters'));
 	}
 }

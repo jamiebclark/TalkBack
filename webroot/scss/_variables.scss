@@ -4,14 +4,23 @@ $break-mid: 							760px !default;
 $break-large:							960px !default;
 
 // Colors
-$dark-grey:								#666 !default;
-$light-grey:							#EEE !default;
-$grey:									#CCC !default;
+$gray:									#CCC !default;
+$gray-dark:								#666 !default;
+$gray-light:							#EEE !default;
 $yellow:								#FFFF68 !default;
 $yellow-light:							rgba($yellow, .75) !default;
 
-$border-dark:							1px solid $dark-grey !default;
-$border-light:							1px solid $light-grey !default;
+$border-dark:							1px solid $gray-dark !default;
+$border-light:							1px solid $gray-light !default;
+
+// Layouts
+// -------------------------------------------------
+$padding-base-vertical:					10px !default;
+$padding-base-horizontal:				16px !default;
+$padding-large-vertical:				20px !default;
+$padding-large-horizontal:				32px !default;
+
+$border-radius-base:					4px !default;
 
 // Comments
 // --------------------------------------------------
@@ -19,10 +28,10 @@ $thumb-width:							40px !default;
 $thumb-sm-width:						20px !default;
 $thumb-lg-width:						80px !default;
 
-$comment-border-radius:					4px !default;
+$comment-border-radius:					$border-radius-base !default;
 $comment-padding:						20px !default;
 
-$comment-border:						1px solid $light-grey !default;
+$comment-border:						1px solid $gray-light !default;
 $comment-bg:							transparent !default;
 $comment-color: 						inherit !default;
 
@@ -43,13 +52,13 @@ $comment-read-border:					$comment-border !default;
 $comment-read-bg:						$comment-bg !default;
 $comment-read-color:					$comment-color !default;
 
-$comment-unread-border:					1px solid $grey !default;
+$comment-unread-border:					1px solid $gray !default;
 $comment-unread-bg:						$comment-bg !default;
 $comment-unread-color:					$comment-color !default;
 
 $comment-deleted-border:				$comment-border !default;
 $comment-deleted-bg:					$comment-bg !default;
-$comment-deleted-color:					$grey !default;
+$comment-deleted-color:					$gray !default;
 
 // Messages
 // -------------------------------------------------

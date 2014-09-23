@@ -44,7 +44,14 @@ class Channel extends TalkBackAppModel {
 			return null;
 		}
 	}
-	
+
+/**
+ * Returns a part of a query array that filters a channel result by one commenter's permissions
+ *
+ * @param int $commenterId The commenter id
+ * @param string $prefix Optional page prefix to filter further
+ * @return array The part of the find query array
+ **/
 	public function getCommenterAssociation($commenterId = null, $prefix = null) {
 		$query = [
 			'recursive' => -1,
@@ -67,48 +74,8 @@ class Channel extends TalkBackAppModel {
 		}
 		
 		// Filters by CommenterType
-		$query['joins'][] = [
-			'table' => 'tb_channels_commenter_types',
-			'alias' => 'CommenterTypeFilter',
-			'type' => 'LEFT',
-			'conditions' => ['CommenterTypeFilter.channel_id = ' . $this->escapeField('id')],
-		];
-		$query['conditions']['OR'][]['CommenterTypeFilter.id'] = null;	
-		
-		if (!empty($commenterId)) {
-			if (!$this->CommenterType->isTree()) {
-				$query['joins'][] = [
-					'table' => $this->CommenterType->getTable(),
-					'alias' => 'CommenterType',
-					'type' => 'LEFT',
-					'conditions' => ['CommenterType.id = CommenterTypeFilter.commenter_type_id'],
-				];
-			} else {
-				$query['joins'][] = [
-					'table' => $this->CommenterType->getTable(),
-					'alias' => 'CommenterTypeParent',
-					'type' => 'LEFT',
-					'conditions' => ['CommenterTypeParent.id = CommenterTypeFilter.commenter_type_id'],
-				];
-				$query['joins'][] = [
-					'table' => $this->CommenterType->getTable(),
-					'alias' => 'CommenterType',
-					'type' => 'LEFT',
-					'conditions' => ['CommenterType.lft BETWEEN CommenterTypeParent.lft AND CommenterTypeParent.rght']
-				];
-			}
-			$query['joins'][] = [
-				'table' => 'tb_commenter_types_commenters',
-				'alias' => 'CommenterCommenterType',
-				'type' => 'LEFT',
-				'conditions' => ['CommenterCommenterType.commenter_type_id = CommenterType.id']
-			];
-			$query['conditions']['OR'][]['CommenterCommenterType.commenter_id'] = $commenterId;
-		} else {
-			if (!empty($this->CommenterType->allCommentersId)) {
-				$query['conditions']['OR'][]['CommenterTypeFilter.commenter_type_id'] = $this->CommenterType->allCommentersId;
-			}
-		}
+		$query = $this->CommenterType->joinCommenter($this->alias, $commenterId, $query);
+
 		return $query;	
 	}
 	
@@ -179,5 +146,26 @@ class Channel extends TalkBackAppModel {
 	public function setCurrentCommenter($commenterId = null) {
 //		$result = parent::setCurrentCommenter($commenterId);
 		return $this->Forum->setCurrentCommenter($commenterId);
+	}
+
+/**
+ * Sets the total amount of topics inside of a channel
+ *
+ * @param int $id The channel id
+ * @return void;
+ **/
+	public function setTopicCount($id) {
+		$this->Forum->Behaviors->detach('TalkBack.HasRead');
+		$result = $this->Forum->find('first', array(
+			'recursive' => -1,
+			'fields' => array('SUM(Forum.topic_count) AS topic_count'),
+			'conditions' => array('Forum.channel_id' => $id),
+			'callbacks' => false
+		));
+		$this->create();
+		return $this->save(array(
+			'id' => $id,
+			'topic_count' => $result[0]['topic_count'],
+		), array('callbacks' => false, 'validate' => false));
 	}
 }

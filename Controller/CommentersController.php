@@ -2,6 +2,11 @@
 class CommentersController extends TalkBackAppController {
 	public $name = 'Commenters';
 	
+	public function index() {
+		$commenters = $this->paginate();
+		$this->set(compact('commenters'));
+	}
+	
 	public function search($q = null) {
 		if (empty($q) && !empty($this->request->query['term'])) {
 			$q = $this->request->query['term'];
