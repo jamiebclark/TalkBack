@@ -1,15 +1,19 @@
 <div class="row">
 	<div class="col-sm-4">
-		<h2 class="tb-message-list-heading"><?php echo $title_for_layout; ?></h2>
-		<div class="tb-message-list-nav"><?php 
-			echo $this->Html->link(
-				'Compose', 
-				array('action' => 'add'), 
-				array('class' => 'ajax-modal btn btn-large btn-default')
-			); 
-		?></div>
-		<div id="tb-messages-list">
-			<?php echo $this->element('messages/archive'); ?>
+		<div class="box box-list">
+			<h2 class="box-header tb-message-list-heading">
+				<div class="pull-right tb-message-list-nav"><?php 
+					echo $this->Html->link(
+						'<i class="fa fa-plus"></i> Compose', 
+						array('action' => 'add'), 
+						array('class' => 'ajax-modal btn btn-large btn-default', 'escape' => false)
+					); 
+				?></div>
+				<?php echo $title_for_layout; ?>
+			</h2>
+			<div id="tb-messages-list">
+				<?php echo $this->element('messages/archive'); ?>
+			</div>
 		</div>
 	</div>
 	<div class="col-sm-8">
@@ -17,7 +21,7 @@
 			<h3>Get Started!</h3>
 			<p>
 			<?php if (empty($messages)): ?>
-				Looks like you haven't messages anyone yet! 
+				Looks like you haven't messaged anyone yet! 
 			<?php endif; ?>
 			<?php echo $this->Html->link(
 				'Compose a new message', 
@@ -36,6 +40,7 @@
 				$messageLinks = $('.tb-messages');
 			$window.addClass('loading');
 			$(this).removeClass('unread');
+			console.log(url);
 			$.ajax(url, {
 				dataType: 'html'
 			})
@@ -69,4 +74,4 @@ $(document).ready(function() {
 	}
 });
 
-<?php $this->Html->scriptEnd();
+<?php $this->Html->scriptEnd(); ?>

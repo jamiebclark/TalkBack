@@ -30,6 +30,7 @@
 }
 #tb-messages-list {
 	height: $message-window-height - $message-list-title-heading-height + $message-list-title-nav-height;
+	clear: both;
 }
 .tb-message-list-heading {
 	font-size: $message-list-title-heading-size;
@@ -44,6 +45,10 @@
 	min-height: $message-window-height;
 	border: $border-light;
 	padding: 20px;
+	> .tb-message-view-title {
+		margin-top: 0;
+	}
+
 	&.loading {
 		opacity: .25;
 		background-color: #CCC;

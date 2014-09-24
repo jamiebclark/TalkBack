@@ -1,5 +1,5 @@
 <div class="tb-message-view">
-	<h3><?php echo $message['Message']['subject']; ?></h3>
+	<h3 class="tb-message-view-title"><?php echo $message['Message']['subject']; ?></h3>
 	<dl class="dl dl-horizontal">
 		<dt>Participants:</dt>
 		<dd><?php 
