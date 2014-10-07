@@ -38,7 +38,9 @@ class Topic extends TalkBackAppModel {
 
 	public function beforeDelete($cascade = true) {
 		$result = $this->read();
-		$this->_updateTopicId = $result[$this->alias]['topic_id'];
+		if (!empty($result[$this->alias]['topic_id'])) {
+			$this->_updateTopicId = $result[$this->alias]['topic_id'];
+		}
 		return parent::beforeDelete($cascade);
 	}
 
