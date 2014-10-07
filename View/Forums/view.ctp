@@ -26,7 +26,7 @@
 		
 		<?php if (!empty($forum['Forum']['description'])): ?>
 			<div class="tb-description">
-				<?php echo nl2br($forum['Forum']['description']); ?>
+				<?php echo $this->DisplayText->text($forum['Forum']['description']); ?>
 			</div>
 		<?php endif; ?>
 
