@@ -68,9 +68,17 @@ class Channel extends TalkBackAppModel {
 			'type' => 'LEFT',
 			'conditions' => ['CommenterFilter.channel_id = ' . $this->escapeField('id')],
 		];
-		$query['conditions']['OR'][]['CommenterFilter.commenter_id'] = null;
+
+		$query['conditions']['OR'][]['OR'] = [
+			'CommenterFilter.commenter_id' => null,
+			'CommenterFilter.id' => null,
+		];
+
 		if (!empty($commenterId)) {
-			$query['conditions']['OR'][]['CommenterFilter.commenter_id'] = $commenterId;
+			$query['conditions']['OR'][]['OR'] = [
+				'CommenterFilter.commenter_id' => $commenterId,
+				'CommenterFilter.id' => NULL,
+			];
 		}
 		
 		// Filters by CommenterType

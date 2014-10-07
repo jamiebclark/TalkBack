@@ -80,10 +80,18 @@ class CommenterType extends TalkBackAppModel {
 				'type' => 'LEFT',
 				'conditions' => [$this->hasMany['CommentersCommenterType']['foreignKey'] . ' = CommenterType.id']
 			];
-			$conditions['OR'][]['CommentersCommenterType.' . $this->hasMany['CommentersCommenterType']['foreignKey']] = $commenterId;
+			$conditions['OR'][]['OR'] = [
+				'CommentersCommenterType.user_id' => $commenterId,
+				'CommentersCommenterType.id' => null,
+			];
+			
+
 		} else {
 			if (!empty($this->allCommentersId)) {
-				$conditions['OR'][][self::COMMENTER_TYPE_FILTER_ALIAS . '.' . $habtm['associationForeignKey']] = $this->allCommentersId;
+				$conditions['OR'][]['OR'] = [
+					self::COMMENTER_TYPE_FILTER_ALIAS . '.' . $habtm['associationForeignKey'] => $this->allCommentersId,
+					self::COMMENTER_TYPE_FILTER_ALIAS . '.id' => null,
+				];
 			}
 		}
 		$query['conditions'][] = $conditions;
