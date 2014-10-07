@@ -1,4 +1,5 @@
 <?php
+$this->ModelView->setModel('TalkBack.Topic');
 $this->Table->reset();
 foreach ($topics as $topic):
 	$this->Table->cells(array(
