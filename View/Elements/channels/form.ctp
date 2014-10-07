@@ -7,7 +7,7 @@ echo $this->Form->create();
 			<legend>Channel Description</legend><?php
 				echo $this->Form->hidden('id');
 				echo $this->Form->input('title');
-				echo $this->Form->input('description');
+				echo $this->Form->input('description', array('rows' => 10));
 		?></fieldset>
 		<fieldset>
 			<legend>Admins</legend>

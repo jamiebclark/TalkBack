@@ -17,6 +17,7 @@ echo $this->Form->inputs(array(
 	),
 	'body' => array(
 		'label' => 'Description',
+		'rows' => 10,
 	),
 ));
 
