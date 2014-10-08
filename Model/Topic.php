@@ -126,12 +126,11 @@ class Topic extends TalkBackAppModel {
 		], $query);
 		
 		// Most recent topics in the forum
-		$updatedTopics['Last Updated'] = $this->find('all',
-			Hash::merge([
+		$query = Hash::merge([
 				'contain' => ['LastComment' => ['Commenter']],
 				'order' => ['Topic.modified' => 'DESC']
-			], $query)
-		);
+			], $query);
+		$updatedTopics['Last Updated'] = $this->find('all', $query);
 			
 		// Most recent comments in the forum
 		$updatedTopics['Recently Added'] = $this->find('all', 

@@ -116,6 +116,9 @@ class HasReadBehavior extends TalkBackBehavior {
 					'HasRead.commenter_id' => $commenterId,
 				]
 			];
+		} else {
+			$query['fields'][] = '0 AS is_unread';
+			$query['fields'][] = '1 AS is_read';
 		}
 		return $query;
 	}
