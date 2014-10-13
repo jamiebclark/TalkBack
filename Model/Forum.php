@@ -88,6 +88,29 @@ class Forum extends TalkBackAppModel {
 			return !empty($result);
 		}
 	}
+/**
+ * Determines if a user can add a topic to a Forum
+ *
+ * @param int $id Forum id
+ * @param int $id The Commenter id
+ * @return bool True if yes, false if no;
+ **/
+	public function canTopicBeAdded($id, $commenterId = null) {
+		if (empty($commenterId)) {
+			return false;
+		}
+		$result = $this->find('first', array(
+			'contain' => array('Channel'),
+			'conditions' => array($this->escapeField() => $id)
+		));
+
+		// Checks if Users are allowed to add topics in the Channel settings
+		if (!empty($result['Channel']['allow_topics'])) {
+			return true;
+		}
+		// Otherwise they must be an admin
+		return $this->isCommenterAdmin($id, $commenterId);
+	}
 	
 /**
  * Finds all the forums a commenter has access to. You can also limit this search by a specific prefix
