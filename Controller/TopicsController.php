@@ -82,7 +82,25 @@ class TopicsController extends TalkBackAppController {
 	}
 	
 	public function add($forumId = null) {
-		$this->validateRedirect(array('forumPermission' => array($forumId), 'login', 'hasForum' => compact('forumId')));
+		$forum = $this->Topic->Forum->find('first', array(
+			'contain' => array('Channel'),
+			'conditions' => array(
+				'Forum.id' => $forumId
+			)
+		));
+
+		$permissions = array(
+			'login', 
+			'hasForum' => compact('forumId')
+		);
+
+		// If users aren't allowed to make new topics, make sure they're admins
+		if (empty($forum['Channel']['allow_topics'])) {
+			$permissions['forumPermission'] = array($forumId);
+		}
+
+		$this->validateRedirect($permissions);
+
 		$this->FormData->addData(array(
 			'default' => array(
 				'Topic' => array(

@@ -69,6 +69,7 @@ class Forum extends TalkBackAppModel {
 			'contain' => ['Commenter', 'CommenterType'],
 			'conditions' => [$this->escapeField() => $id]
 		]);
+
 		if (!$this->Channel->isCommenterAllowed($result[$this->alias]['channel_id'], $commenterId, $prefix)) {
 			// Makes sure they're allowed in the channel first
 			return false;
