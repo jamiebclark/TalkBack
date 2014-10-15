@@ -30,6 +30,7 @@ $stamp = strtotime($topic['Topic']['created']);
 				</h5>
 				<h5><?php echo number_format($topic['Topic']['comment_count']); ?> Comments</h5>
 			</div>
+			<?php echo $this->element('TalkBack.neighbors', array('neighbors' => $neighbors, 'model' => 'Topic')); ?>
 			<a name="comments"></a>
 			<?php echo $this->element('comments', array(
 				'model' => 'TalkBack.Topic',
@@ -37,6 +38,9 @@ $stamp = strtotime($topic['Topic']['created']);
 				'url' => array($topic['Topic']['id'], '#' => 'comments'),
 				'isCommentable' => $isCommentable,
 			)); ?>
+			<?php if (!empty($currentCommenterIsAdmin)): ?>
+				<?php echo $this->element('TalkBack.has-read-list', array('result' => $topic)); ?>
+			<?php endif; ?>
 		</div>
 	</div>
 	<div class="col-md-4">

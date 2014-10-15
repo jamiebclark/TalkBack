@@ -264,6 +264,26 @@ class HasReadBehavior extends TalkBackBehavior {
 				)
 			)
 		), false);
+
+		$Commenter = ClassRegistry::init('TalkBack.Commenter');
+		if (empty($Commenter->hasMany['CommenterHasRead'])) {
+			$Commenter->bindModel(array(
+				'hasMany' => array(
+					'CommenterHasRead' => array(
+						'className' => 'TalkBack.CommenterHasRead',
+						'foreignKey' => 'commenter_id',
+					)
+				)
+			), false);
+			$Model->CommenterHasRead->bindModel(array(
+				'belongsTo' => array(
+					'Commenter' => array(
+						'className' => 'TalkBack.Commenter',
+						'foreignKey' => 'commenter_id',
+					)
+				)
+			), false);
+		}
 	}
 	private function _getTableName($Model) {
 		$tableName = $Model->useTable;

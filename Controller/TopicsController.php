@@ -40,12 +40,12 @@ class TopicsController extends TalkBackAppController {
 		return parent::beforeFilter();
 	}
 	
-	public function index($channelId = null) {
-		$redirect = array('controller' => 'channels', 'action' => 'view', $channelId);
+	public function index($forumId = null) {
+		$redirect = array('controller' => 'forums', 'action' => 'view', $forumId);
 		if (!empty($this->request->params['prefix'])) {
 			$redirect[$this->request->params['prefix']] = true;
 		}
-		if (empty($channelId)) {
+		if (empty($forumId)) {
 			$redirect['action'] = 'index';
 		}
 		$this->redirect($redirect);
@@ -54,12 +54,18 @@ class TopicsController extends TalkBackAppController {
 	public function view($id = null) {
 		$this->prefixRedirect($id);
 		$this->validateRedirect(array('permission' => array($id)));
-		$topic = $this->FormData->findModel($id, null, array(
+		$query = array(
 			'contain' => array(
 				'Forum' => array('Channel'),
 				'Commenter',
 			)
-		));
+		);
+
+		if ($this->CurrentCommenter->isAdmin()) {
+			$query['contain']['CommenterHasRead']['Commenter'] = array();
+		}
+
+		$topic = $this->FormData->findModel($id, null, $query);
 
 		$isCommentable = $this->Topic->isCommentable($id, 
 			$this->CurrentCommenter->getId(), 
@@ -73,6 +79,8 @@ class TopicsController extends TalkBackAppController {
 			$this->Auth->user('id'), 
 			$this->CurrentCommenter->isAdmin()
 		));
+
+		$this->set('neighbors', $this->Topic->findNeighbors($id));
 
 		// Sidebar elements
 		// -------------------------------

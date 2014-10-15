@@ -106,6 +106,31 @@ class Topic extends TalkBackAppModel {
 		return parent::isCommentable($id, $commenterId, $isAdmin);
 	}
 	
+	public function findNeighbors($id, $query = []) {
+		$result = $this->read(null, $id);
+		$result = $result[$this->alias];
+
+		$key = round(!empty($result['sticky'])) . $result['created'];
+		$query['conditions'][]['NOT'][$this->escapeField()] = $id;
+		$query['conditions'][$this->escapeField('forum_id')] = $result['forum_id'];
+
+		$prevQuery = $query;
+		$nextQuery = $query;
+
+		$nextQuery['conditions'][sprintf('CONCAT(%s, %s) <= ', $this->escapeField('sticky'), $this->escapeField('created'))] = $key;
+		$nextQuery['conditions'][]['NOT'][$this->escapeField()] = $id;
+		$nextQuery['order'] = $this->order;
+
+		$prevQuery['conditions'][sprintf('CONCAT(%s, %s) >= ', $this->escapeField('sticky'), $this->escapeField('created'))] = $key;
+		$prevQuery['conditions'][]['NOT'][$this->escapeField()] = $id;
+		$prevQuery['order'] = array($this->escapeField('created') => 'ASC', $this->escapeField('sticky') => 'ASC');
+
+		return array(
+			'next' => $this->find('first', $nextQuery),
+			'prev' => $this->find('first', $prevQuery)
+		);
+	}
+
 	public function findUpdatedList($query = []) {
 		$updatedTopics = array();
 		$db = $this->getDataSource();
