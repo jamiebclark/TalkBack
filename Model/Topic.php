@@ -87,21 +87,12 @@ class Topic extends TalkBackAppModel {
 	//Extends existing function to make sure the topic isn't locked
 	public function isCommentable($id, $commenterId = null, $isAdmin = false) {
 		if (empty($isAdmin)) {
-			$comment = $this->Comment->find('first', [
-				'recursive' => -1,
-				'joins' => [[
-					'table' => 'topics',
-					'alias' => 'Topic',
-					'conditions' => [
-						'Topic.id = ' . $this->escapeField('topic_id'),
-					]
-				]],
-				'conditions' => [
-					$this->escapeField('id') => $id,
-					'Topic.locked' => false,
-				]
-			]);
-			return !empty($comment);
+			$result = $this->find('first', array(
+				'conditions' => array(
+					$this->escapeField() => $id,
+					$this->escapeField('locked') => false,
+				)));
+			return !empty($result);
 		}
 		return parent::isCommentable($id, $commenterId, $isAdmin);
 	}
