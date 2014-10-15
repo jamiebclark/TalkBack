@@ -106,6 +106,13 @@ class Topic extends TalkBackAppModel {
 		return parent::isCommentable($id, $commenterId, $isAdmin);
 	}
 	
+/**
+ * Finds the topic before and after the given topic
+ *
+ * @param int $id The topic id
+ * @param array $query Additional query parameters
+ * @return array The result array with a "next" and "prev" key
+ **/
 	public function findNeighbors($id, $query = []) {
 		$result = $this->read(null, $id);
 		$result = $result[$this->alias];
@@ -118,11 +125,9 @@ class Topic extends TalkBackAppModel {
 		$nextQuery = $query;
 
 		$nextQuery['conditions'][sprintf('CONCAT(%s, %s) <= ', $this->escapeField('sticky'), $this->escapeField('created'))] = $key;
-		$nextQuery['conditions'][]['NOT'][$this->escapeField()] = $id;
 		$nextQuery['order'] = $this->order;
 
 		$prevQuery['conditions'][sprintf('CONCAT(%s, %s) >= ', $this->escapeField('sticky'), $this->escapeField('created'))] = $key;
-		$prevQuery['conditions'][]['NOT'][$this->escapeField()] = $id;
 		$prevQuery['order'] = array($this->escapeField('created') => 'ASC', $this->escapeField('sticky') => 'ASC');
 
 		return array(
