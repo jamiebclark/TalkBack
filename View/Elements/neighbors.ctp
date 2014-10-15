@@ -4,7 +4,7 @@ $default = array(
 	'model' => null,
 	'controller' => $this->request->params['controller'],
 	'action' => 'view',
-	'plugin' => 'TalkBack',
+	'plugin' => 'talk_back',
 );
 extract(array_merge($default, compact(array_keys($default))));
 
