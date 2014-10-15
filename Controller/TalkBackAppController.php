@@ -18,7 +18,14 @@ class TalkBackAppController extends AppController {
 	
 	public function beforeFilter() {
 		$this->savePrefix();
-		$this->CurrentCommenter->setAdmin();
+
+		// Sets Admin methods
+		$setAdmin = false;
+		if (method_exists($this, '_setTalkBackAdmin')) {
+			$setAdmin = $this->_setTalkBackAdmin();
+		}
+		$this->CurrentCommenter->setAdmin($setAdmin);
+
 		return parent::beforeFilter();
 	}
 	
