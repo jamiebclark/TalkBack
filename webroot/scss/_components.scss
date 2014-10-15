@@ -53,6 +53,7 @@ ul.tb-neighbors {
 			display: block;
 			width: $neighbor-icon-size;
 			text-align: center;
+			opacity: .25;
 		}
 		&.next {
 			float: right;
