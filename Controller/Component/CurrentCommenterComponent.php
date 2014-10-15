@@ -70,7 +70,7 @@ class CurrentCommenterComponent extends Component {
 		return $this->controller->currentCommenter;
 	}
 	
-	public function setAdmin($val = true) {
+	public function setAdmin($val = false) {
 		if (empty($this->_commenterId)) {
 		//	throw new Exception('Cannot set Current Commenter admin status without first setting the commenter ID');
 		}
