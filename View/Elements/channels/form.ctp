@@ -40,20 +40,19 @@ echo $this->Form->create();
 				echo $this->Form->input('prefix', array(
 					'label' => 'URL Prefix',
 					'options' => $prefixes,
-					'helpBlock' => 'If you would like to limit this channel to only showing up for a specific page prefix,
-						like <strong>/admin/</strong> or <strong>/staff/</strong>',
+					'after' => '<span class="help-block">If you would like to limit this channel to only showing up for a specific page prefix,
+						like <strong>/admin/</strong> or <strong>/staff/</strong></span>',
 				));
 				
 				echo $this->Form->input('Commenter.Commenter', array(
 					'label' => 'Channel Members',
-					'after' => $this->Commenter->addInput(),
-					'helpBlock' => '<strong>Only</strong> users added to this list will see this channel',
+					'after' => '<span class="help-block"><strong>Only</strong> users added to this list will see this channel</span>' . $this->Commenter->addInput(),
 					
 				));
 				
 				echo $this->Form->input('CommenterType.CommenterType', array(
 					'label' => 'Member Types',
-					'helpBlock' => 'Limit this channel to only specific user types',
+					'after' => '<span class="help-block">Limit this channel to only specific user types</span>',
 				));
 		?></fieldset>
 	</div>
