@@ -5,7 +5,7 @@ echo $this->Form->hidden('commenter_id');
 ?>
 <fieldset id="email-control">
 	<legend>Notification Emails</legend>
-	<p class="note">When should you receive an automated email?</p>
+	<p class="help-block">When should you receive an automated email?</p>
 	<?php
 	echo $this->Form->input('CommenterEmailControl.email_on_reply', [
 		'label' => 'Notify on replies',
