@@ -26,15 +26,16 @@
 		<?php echo $this->element('forums/archive'); ?>
 	</div>
 	<div class="col-md-4">
-		<div class="box">
-			<h3 class="box-header">
+		<div class="panel panel-default">
+			<div class="panel-heading">
 				<?php echo $this->Html->link('Users', array('action' => 'commenters', $channel['Channel']['id'])); ?>
-			</h3>
-			<?php echo $this->Html->link(
+			</div>
+			<div class="panel-body"><?php echo $this->Html->link(
 				sprintf('<strong>%s</strong> users', number_format($commenterCount)),
 				array('action' => 'commenters', $channel['Channel']['id']),
 				array('escape' => false)
 			); ?>
+			</div>
 		</div>
 
 		<?php echo $this->element('TalkBack.topics/sidebar'); ?>

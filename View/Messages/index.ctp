@@ -1,8 +1,8 @@
 <div class="row">
 	<div class="col-sm-4">
-		<div class="box box-list">
-			<h2 class="box-header tb-message-list-heading">
-				<div class="pull-right tb-message-list-nav"><?php 
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="pull-right"><?php 
 					echo $this->Html->link(
 						'<i class="fa fa-plus"></i> Compose', 
 						array('action' => 'add'), 
@@ -10,7 +10,7 @@
 					); 
 				?></div>
 				<?php echo $title_for_layout; ?>
-			</h2>
+			</div>
 			<div id="tb-messages-list">
 				<?php echo $this->element('messages/archive'); ?>
 			</div>

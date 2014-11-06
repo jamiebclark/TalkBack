@@ -4,17 +4,17 @@
 			<?php // Empty display ?>
 			<?php // <div class="lead"><em>No topics to display</div> ?>
 		<?php else: ?>
-			<div class="box box-list">
-				<h3 class="box-header"><?php echo $title; ?></h3>
-				<ul class="nav nav-stacked nav-pills">
+			<div class="panel panel-default">
+				<div class="panel-heading"><?php echo $title; ?></div>
+				<ul class="list-group">
 				<?php foreach ($sidebarTopicResult as $sidebarTopic): 
-					$liClass = '';
+					$liClass = 'list-group-item';
 					$class = '';
 					if (!empty($topic['Topic']) && $sidebarTopic['Topic']['id'] == $topic['Topic']['id']) {
-						$liClass = 'active';
+						$liClass = ' active';
 					}
 					if (empty($sidebarTopic['CurrentCommenterHasRead']['id'])) {
-						$class =  'unread';
+						$class =  ' unread';
 					}
 					
 					$title = $this->Text->truncate($sidebarTopic['Topic']['title']);
