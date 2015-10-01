@@ -51,7 +51,7 @@ class ChannelsController extends TalkBackAppController {
 
 		$this->paginate = ['Forum' => [
 			'isAdmin' => $this->CurrentCommenter->isAdmin(),
-			'conditions' => ['Forumn.channel_id' => $id]
+			'conditions' => ['Forum.channel_id' => $id]
 		]];
 
 		$this->set('forums', $this->paginate('Forum'));
