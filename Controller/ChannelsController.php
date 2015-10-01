@@ -59,7 +59,7 @@ class ChannelsController extends TalkBackAppController {
 		$this->set('talkBackPermissions', [
 			'Channel' => [
 				'canEdit' => $isAdmin,
-				'canCreateForum' =>$isAdmin || $result['Channel']['allow_forums'],
+				'canCreateForum' =>$isAdmin || $result['allow_forums'],
 			]
 		]);
 	}
