@@ -13,6 +13,7 @@ class ForumsController extends TalkBackAppController {
 			
 			$this->paginate = [
 				//'relatedUnread' => 'Comment',
+				'isAdmin' => $this->CurrentCommenter->isAdmin(),
 				'contain' => ['Channel'],
 				'conditions' => ['Forum.channel_id' => $channelIds],
 			];
@@ -23,7 +24,12 @@ class ForumsController extends TalkBackAppController {
 	public function view($id = null) {
 		$this->validateRedirect(array('permission' => array($id)));
 		
-		$this->FormData->findModel($id);
+		$result = $this->FormData->findModel($id);
+		if (!$this->CurrentCommenter->isAdmin() && empty($result['Forum']['active'])) {
+			$this->Session->SetFlash('Sorry, that forum isn\'t available right now');
+			$this->redirect(array('action' => 'index'));
+		}
+
 		$this->paginate = array(
 			'Topic' => array(
 				'contain' => array('CurrentCommenterHasRead', 'Commenter', 'LastComment'),
@@ -32,6 +38,7 @@ class ForumsController extends TalkBackAppController {
 		);
 		$this->set('topics', $this->paginate('Topic'));		
 		$this->set('updatedTopics', $this->Forum->Topic->findUpdatedList([
+			'isAdmin' => $this->CurrentCommenter->isAdmin(),
 			'conditions' => ['Forum.id' => $id]
 		]));
 	}

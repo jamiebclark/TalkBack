@@ -2,6 +2,10 @@
 $this->ModelView->setModel('TalkBack.Forum');
 $this->Table->reset();
 foreach ($forums as $forum):
+	$class = '';
+	if (empty($forum['Forum']['active'])) {
+		$class .= ' empty';
+	}
 	$this->Table->checkbox($forum['Forum']['id']);
 	$this->Table->cells(array(
 		array(
@@ -19,10 +23,14 @@ foreach ($forums as $forum):
 			'Private',
 			'Forum.private',
 		), array(
+			$forum['Forum']['active'] ? '<span class="label label-success">Yes</span>' : '<span class="label label-danger">No</span>',
+			'Active',
+			'Forum.active',
+		), array(
 			$this->ModelView->actionMenu(array('view', 'edit', 'delete'), $forum['Forum']),
 			'Actions',
 		)
-	), true);
+	), compact('class'));
 endforeach; 
 
 echo $this->Table->output(array(

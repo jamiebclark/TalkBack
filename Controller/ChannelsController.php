@@ -13,9 +13,12 @@ class ChannelsController extends TalkBackAppController {
 		$prefix = !empty($this->request->params['prefix']) ? $this->request->params['prefix'] : null;
 		$channels = $this->Channel->findCommenterChannels($this->CurrentCommenter->getId(), $prefix, ['contain' => ['Forum']]);
 
-		$updatedTopics = $this->Channel->Forum->Topic->findUpdatedList([
-			'conditions' => ['Forum.channel_id' => Hash::extract($channels, '{n}.Channel.id')]
-		]);
+		$forumConditions = ['Forum.channel_id' => Hash::extract($channels, '{n}.Channel.id')];
+		if (!$this->CurrentCommenter->isAdmin()) {
+			$forumConditions['Forum.active'] = 1;
+		}
+
+		$updatedTopics = $this->Channel->Forum->Topic->findUpdatedList(['conditions' => $forumConditions]);
 
 		$this->set(compact('channels', 'updatedTopics'));
 	}
@@ -40,12 +43,17 @@ class ChannelsController extends TalkBackAppController {
 
 		$this->set('commenterCount', $this->Channel->Commenter->find('count', ['channelId' => $id]));
 		$this->set('updatedTopics', $this->Channel->Forum->Topic->findUpdatedList([
-			'conditions' => ['Forum.channel_id' => $id]
+			'conditions' => ['Forum.channel_id' => $id],
+			'isAdmin' => $this->CurrentCommenter->isAdmin(),
 		]));
 		
 		$isAdmin = $this->Channel->isCommenterAdmin($id, $this->Auth->user('id'));
 
-		$this->paginate = ['Forum' => ['conditions' => ['Forum.channel_id' => $id]]];
+		$this->paginate = ['Forum' => [
+			'isAdmin' => $this->CurrentCommenter->isAdmin(),
+			'conditions' => $forumConditions
+		]];
+
 		$this->set('forums', $this->paginate('Forum'));
 
 		$this->set('talkBackPermissions', [
@@ -70,7 +78,11 @@ class ChannelsController extends TalkBackAppController {
 	
 	public function admin_view($id = null) {
 		$this->FormData->findModel($id);
-		$this->paginate = ['Forum' => ['conditions' => ['channel_id' => $id]]];
+		$this->paginate = ['Forum' => [
+			'isAdmin' => $this->CurrentCommenter->isAdmin(),
+			'conditions' => ['channel_id' => $id]
+		]];
+
 		$this->set('forums', $this->paginate('Forum'));
 	}
 	

@@ -145,6 +145,13 @@ class Topic extends TalkBackAppModel {
 			],
 			'limit' => 5,
 		], $query);
+
+		if (array_key_exists('isAdmin', $query)) {
+			if ($query['isAdmin'] === false) {
+				$query['conditions']['Forum.active'] = 1;
+			}
+			unset($query['isAdmin']);
+		}
 		
 		// Most recent topics in the forum
 		$query = Hash::merge([

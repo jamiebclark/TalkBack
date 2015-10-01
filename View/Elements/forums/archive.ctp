@@ -22,6 +22,11 @@ foreach ($forums as $forum):
 	if (!empty($forum['Forum'])) {
 		$forum = $forum['Forum'];
 	}
+	$class = '';
+	if (empty($forum['active'])) {
+		$class .= ' empty';
+	}
+	
 	$url = array('controller' => 'forums', 'action' => 'view', $forum['id'], 'plugin' => 'talk_back');
 	
 	$topics = $this->Html->tag('span',
@@ -66,7 +71,7 @@ foreach ($forums as $forum):
 			//'Channel.comment_count',
 			array('class' => 'text-center'),
 		),
-	), true);
+	), compact('class'));
 endforeach;
 echo $this->Table->output(array(
 	'paginate' => true,

@@ -44,6 +44,20 @@ class Forum extends TalkBackAppModel {
 		return parent::beforeSave($options);
 	}
 
+	public function beforeFind($query = array()) {
+		$oQuery = $query;
+		if (array_key_exists('isAdmin', $query)) {
+			if ($query['isAdmin'] === false) {
+				$query['conditions'][$this->escapeField('active')] = 1;
+			}
+			unset($query['isAdmin']);
+		}
+
+		if ($query != $oQuery) {
+			return $query;
+		}
+		return parent::beforeFind($query);
+	}
 /**
  * Determines if a given Commenter ID is an Administrator of the current forum
  * 

@@ -10,8 +10,13 @@ echo $this->Form->create();
 		));
 		if ($isAdmin) {
 			echo $this->Form->input('channel_id');
+			echo $this->Form->input('active', array(
+				'class' => 'checkbox',
+				'after' => '<span class="help-block">If unchecked, this forum will only be visible to administrators</span>',
+			));
 		} else {
 			echo $this->Form->hidden('channel_id');
+			echo $this->Form->hidden('active');
 		}
 
 		echo $this->Form->submit('Update');

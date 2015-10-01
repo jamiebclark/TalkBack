@@ -7,6 +7,7 @@
 	padding: $padding-base-vertical $padding-base-horizontal;
 	font-style: italic;
 }
+
 .tb-archive {
 	border: $comment-border;
 	border-radius: $comment-border-radius;
@@ -15,6 +16,21 @@
 	
 	> div, > table {
 		margin-bottom: 0;
+	}
+}
+.panel > .tb-archive {
+	border-left: 0;
+	border-right: 0;
+	margin-bottom: 0;
+	> table {
+		tr {
+			td:first {
+				padding-left: $padding-large-horizontal;
+			}
+			td:last {
+				padding-right: $padding-large-horizontal;
+			}
+		}
 	}
 }
 

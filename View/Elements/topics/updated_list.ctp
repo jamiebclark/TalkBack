@@ -6,18 +6,18 @@
 		<?php else: ?>
 			<div class="panel panel-default">
 				<div class="panel-heading"><?php echo $title; ?></div>
-				<ul class="list-group">
+				<div class="list-group">
 				<?php foreach ($sidebarTopicResult as $sidebarTopic): 
-					$liClass = 'list-group-item';
-					$class = '';
+					$class = 'list-group-item';
 					if (!empty($topic['Topic']) && $sidebarTopic['Topic']['id'] == $topic['Topic']['id']) {
-						$liClass = ' active';
+						$class .= ' active';
 					}
 					if (empty($sidebarTopic['CurrentCommenterHasRead']['id'])) {
-						$class =  ' unread';
+						$class .=  ' unread';
 					}
-					
 					$title = $this->Text->truncate($sidebarTopic['Topic']['title']);
+					$title = $this->Html->tag('h4', $title);
+
 					if (!empty($sidebarTopic[0]['total_unread'])) {
 						$title .= $this->Html->tag('span', 
 							'+' . $sidebarTopic[0]['total_unread'], [
@@ -31,18 +31,17 @@
 						$sidebarTopic['Topic']['id'],
 						'plugin' => 'talk_back',
 					];
-					if (!empty($sidebarTopic['LastComment'])) {
-						$title = $this->Comment->quote($sidebarTopic['LastComment'], [
-							'before' => $this->Html->tag('h4', $title),
+					if (!empty($sidebarTopic['LastComment']['id'])) {
+						echo $this->Comment->quote($sidebarTopic['LastComment'], [
+							'class' => $class,
+							'before' => $title,
 						]);
 					} else {
-						$title = $this->Html->link($title, $url, ['escape' => false]);
+						echo $this->Html->link($title, $url, ['escape' => false, 'class' => $class]);
 					}
-					
 					?>
-					<li class="<?php echo $liClass;?>"><?php echo $title; ?></li>
 				<?php endforeach; ?>
-				</ul>
+				</div>
 			</div>
 		<?php endif; ?>
 	<?php endforeach; ?>

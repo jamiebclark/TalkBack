@@ -14,10 +14,10 @@ foreach ($topics as $topic):
 	}
 	
 	$content = $this->Html->tag('h4', $title, ['class' => 'tb-topics-archive-title']);
-	$content .= $this->DisplayText->text($topic['Topic']['body'], [
+	$content .= '<p><small>' . $this->DisplayText->text($topic['Topic']['body'], [
 		'firstParagraph' => true,
 		'truncate' => 100,
-	]);
+	]) . '</p></small>';
 	$content .= sprintf('<p>By %s on %s</p>', 
 		$this->Commenter->link($topic['Commenter']),
 		$this->Calendar->niceShort($topic['Topic']['created'])

@@ -19,6 +19,7 @@ class CommentHelper extends TalkBackAppHelper {
 			'after' => '',
 			'empty' => '',
 		], $options);
+		$options = $this->addClass($options, 'tb-topic-comment-quote');
 		extract($options);
 		
 		$comment = !empty($result[$alias]) ? $result[$alias] : $result;
@@ -53,7 +54,7 @@ class CommentHelper extends TalkBackAppHelper {
 		
 		return $this->Html->link($before . $out . $after, $url, [
 			'escape' => false,
-			'class' => 'tb-topic-comment-quote'
+			'class' => $class
 		]);
 	}
 	
