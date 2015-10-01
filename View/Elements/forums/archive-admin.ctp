@@ -9,7 +9,7 @@ foreach ($forums as $forum):
 	$this->Table->checkbox($forum['Forum']['id']);
 	$this->Table->cells(array(
 		array(
-			$this->ModelView->link($forum['Forum']) . '<br/>' . $forum['Forum']['description'],
+			$this->ModelView->link($forum['Forum']) . '<p><small>' . $forum['Forum']['description'] . '</small></p>',
 			'Title',
 		), array(
 			$this->Html->link(

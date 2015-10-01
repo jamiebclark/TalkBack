@@ -1,38 +1,65 @@
-<?php echo $this->Layout->defaultHeader($forum['Forum']['id'], array(
-	array('Add Topic', array('controller' => 'topics', 'action' => 'add', $forum['Forum']['id']))
-)); 
+<?php echo $this->Layout->defaultHeader(
+	$forum['Forum']['id'], 
+	array(
+		array('Add Topic', array('controller' => 'topics', 'action' => 'add', $forum['Forum']['id'])),
+	),
+	array('title' => 'Forum: "'. $forum['Forum']['title'] . '"')
+); 
+
+$liOpen = '<li class="list-group-item">';
+$liClose = '</li>';
+
 ?>
 <div class="row">
-	<div class="col-sm-8"><?php
-		echo $this->Layout->infoTable(array(
-			'Title' => $forum['Forum']['title'],
-			'Channel' => $this->Html->link($forum['Channel']['title'], array(
-				'controller' => 'channels', 'action' => 'view', $forum['Channel']['id']
-			)),
-			'Created' => $this->Calendar->niceShort($forum['Forum']['created']),
-			'Last Modified' => $this->Calendar->niceShort($forum['Forum']['modified']),
-			'Description' => $this->DisplayText->text($forum['Forum']['description'])
-		));
-		?>
-		<h3>Topics</h3>
-		<?php
-		echo $this->element('topics/archive-admin');
-	?></div>
+	<div class="col-sm-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">About</div>
+			<?php
+			echo $this->Layout->infoTable(array(
+				'Title' => $forum['Forum']['title'],
+				'Channel' => $this->Html->link($forum['Channel']['title'], array(
+					'controller' => 'channels', 'action' => 'view', $forum['Channel']['id']
+				)),
+				'Active' => $forum['Forum']['active'] ? '<span class="label label-success">Yes</span>' : '<span class="label label-danger">No</span>',
+				'Created' => $this->Calendar->niceShort($forum['Forum']['created']),
+				'Last Modified' => $this->Calendar->niceShort($forum['Forum']['modified']),
+				'Description' => $this->DisplayText->text($forum['Forum']['description'])
+			));
+			?>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">Topics</div>
+			<?php echo $this->element('topics/archive-admin'); ?>
+		</div>
+	</div>
 	<div class="col-sm-4">
-		<h3>Permissions</h3>
+		<div class="panel panel-default">
+			<div class="panel-heading">Permissions</div>
+			<div class="panel-body">
+				<dl>
+					<dt>Commenters</dt>
+					<dd>
+					<?php if (!empty($forum['Commenter'])): ?>
+						<ul class="list-group">
+							<?php echo $liOpen . implode($liClose . $liOpen , Hash::extract($forum, 'Commenter.{n}.full_name')) . $liClose; ?>
+						</ul>
+					<?php else: ?>
+						<p><em>All commenters</em></p>
+					<?php endif; ?>
+					</dd>
 
-		<h4>Commenters</h4>
-		<?php if (!empty($forum['Commenter'])): ?>
-			<ul><li><?php echo implode('</li><li>', Hash::extract($forum, 'Commenter.{n}.full_name')); ?></li></ul>
-		<?php else: ?>
-			<p><em>All commenters</em></p>
-		<?php endif; ?>
-		
-		<h4>Commenter Types</h4>
-		<?php if (!empty($forum['CommenterType'])): ?>
-			<ul><li><?php echo implode('</li><li>', Hash::extract($forum, 'CommenterType.{n}.title')); ?></li></ul>
-		<?php else: ?>
-			<p><em>All Commenter Types</em></p>
-		<?php endif; ?>
+					<dt>Commenter Types</dt>
+					<dd>
+					<?php if (!empty($forum['CommenterType'])): ?>
+						<ul class="list-group">
+							<?php echo $liOpen . implode($liClose . $liOpen , Hash::extract($forum, 'CommenterType.{n}.title')) . $liClose; ?>
+						</ul>
+					<?php else: ?>
+						<em>All Commenter Types</em>
+					<?php endif; ?>
+					</dd>
+				</dl>
+			</div>
+		</div>
 	</div>
 </div>

@@ -18,34 +18,34 @@ echo $this->Form->create();
 		} else {
 			echo $this->Form->hidden('active');
 		}
-		
+
 		if ($isAdmin) {
 			echo $this->Form->input('channel_id');
 		} else {
 			echo $this->Form->hidden('channel_id');
 		}
 
-		echo $this->Form->submit('Update');
-	?></div>
-	<?php if ($isAdmin): ?>
-		<div class="col-sm-6">
-		<fieldset>
-			<legend>Permissions</legend>
-			<?php 
-				echo $this->Form->input('Commenter.Commenter', array(
-					'label' => 'Channel Members',
-					'after' => $this->Commenter->addInput(),
-					'between' => '<span class="help-block"><strong>Only</strong> users added to this list will see this forum</span>'
+		?>
+		<?php if ($currentCommenterIsAdmin): ?>
+			<fieldset>
+				<legend>Permissions</legend>
+				<?php 
+					echo $this->Form->input('Commenter.Commenter', array(
+						'label' => 'Channel Members',
+						'after' => $this->Commenter->addInput(),
+						'between' => '<span class="help-block"><strong>Only</strong> users added to this list will see this forum</span>'
+						
+					));
 					
-				));
-				
-				echo $this->Form->input('CommenterType.CommenterType', array(
-					'label' => 'Member Types',
-					'between' => '<span class="help-block">Limit this forum to only specific user types</span>',
-				));
-			?>
-		</fieldset>
-		</div>
-	<?php endif; ?>
+					echo $this->Form->input('CommenterType.CommenterType', array(
+						'label' => 'Member Types',
+						'between' => '<span class="help-block">Limit this forum to only specific user types</span>',
+					));
+				?>
+			</fieldset>
+		<?php endif; ?>
+
+		<?php echo $this->Form->button('Update', array('class' => 'btn btn-primary btn-lg')); ?>
+	</div>
 </div>
 <?php echo $this->Form->end(); ?>
