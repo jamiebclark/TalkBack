@@ -4,9 +4,11 @@ App::uses('TalkBackAppModel', 'TalkBack.Model');
 class CommentersCommenterType extends TalkBackAppModel {
 	public $name = 'CommentersCommenterType';
 
+	public $useTable = 'commenter_types_commenters';
+	
 	public $belongsTo = array(
-		'Commenter' => array('className' => 'TalkBack.Commenter'),
-		'CommenterType' => array('className' => 'TalkBack.CommenterType')
+		'Commenter' => ['className' => 'TalkBack.Commenter'],
+		'CommenterType' => ['className' => 'TalkBack.CommenterType']
 	);
 
 	public function __construct($id = false, $table = null, $ds = null) {
