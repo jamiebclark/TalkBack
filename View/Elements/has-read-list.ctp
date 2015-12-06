@@ -3,14 +3,19 @@
 	<?php if (!empty($result['CommenterHasRead'])): ?>
 		<ul class="list-group">
 		<?php foreach ($result['CommenterHasRead'] as $commenterHasRead): 
-			$title = $commenterHasRead['Commenter']['full_name'];
-			$title = $this->Html->tag('span', date('m/d', strtotime($commenterHasRead['created'])), array('class' => 'badge pull-right')) . $title;
+			$field = Configure::read('TalkBack.Commenter.displayField');
+			$title = $commenterHasRead['Commenter'][$field];
+			$title = $this->Html->tag(
+				'span', 
+				date('m/d', strtotime($commenterHasRead['created'])), 
+				['class' => 'badge pull-right']
+			) . $title;
 			?>
 			<li class="list-group-item">
 				<?php echo $this->Html->link(
 					$title,
-					array('controller' => 'commenters', 'action' => 'view', $commenterHasRead['Commenter']['id']),
-					array('escape' => false)
+					['controller' => 'commenters', 'action' => 'view', $commenterHasRead['Commenter']['id']],
+					['escape' => false]
 				); ?>
 			</li>
 		<?php endforeach; ?>

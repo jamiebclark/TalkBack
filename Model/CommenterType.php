@@ -3,31 +3,31 @@
 App::uses('TalkBackAppModel', 'TalkBack.Model');
 class CommenterType extends TalkBackAppModel {
 	public $name = 'CommenterType';
-	public $hasMany = array(
-		'CommentersCommenterType' => array(
+	public $hasMany = [
+		'CommentersCommenterType' => [
 			'className' => 'TalkBack.CommentersCommenterType',
-		)
-	);
-	public $hasAndBelongsToMany = array(
-		'Commenter' => array(
+		]
+	];
+	public $hasAndBelongsToMany = [
+		'Commenter' => [
 			'className' => 'TalkBack.Commenter',
 			'joinTable' => 'tb_commenter_types_commenters',
 			'foreignKey' => 'commenter_type_id',
 			'associationForeignKey' => 'commenter_id',
-		),
-		'Channel' => array(
+		],
+		'Channel' => [
 			'className' => 'TalkBack.Channel',
 			'foreignKey' => 'commenter_type_id',
 			'associationForeignKey' => 'channel_id',
 			'joinTable' => 'tb_channels_commenter_types',
-		),
-		'Forum' => array(
+		],
+		'Forum' => [
 			'className' => 'TalkBack.Forum',
 			'foreignKey' => 'commenter_type_id',
 			'associationForeignKey' => 'forum_id',
 			'joinTable' => 'tb_forums_commenter_types',
-		),
-	);
+		],
+	];
 	
 	const COMMENTER_TYPE_FILTER_ALIAS = 'CommenterTypeFilter';
 
@@ -40,12 +40,12 @@ class CommenterType extends TalkBackAppModel {
 		$this->hasConfigure = $this->constructFromConfigure();
 		if ($config = Configure::read('TalkBack.CommentersCommenterType')) {
 			$this->bindModel(array(
-				'hasMany' => array(
-					'CommentersCommenterType' => array(
+				'hasMany' => [
+					'CommentersCommenterType' => [
 						'className' => 'TalkBack.CommentersCommenterType',
 						'foreignKey' => $config['commenterTypeForeignKey'],
-					)
-				),
+					]
+				],
 				'hasAndBelongsToMany' => array(
 					'Commenter' => array(
 						'joinTable' => $this->CommentersCommenterType->getTable(),
@@ -68,8 +68,8 @@ class CommenterType extends TalkBackAppModel {
 		return $this->schema('lft') && $this->schema('rght');
 	}
 
-	public function joinCommenter($modelName, $commenterId, $query = array(), $options = array()) {
-		$conditions = array();
+	public function joinCommenter($modelName, $commenterId, $query = [], $options = []) {
+		$conditions = [];
 		$habtm = $this->{$modelName}->hasAndBelongsToMany[$this->alias];
 
 		if (!empty($commenterId)) {
@@ -78,10 +78,11 @@ class CommenterType extends TalkBackAppModel {
 				'table' => $this->CommentersCommenterType->getTable(),
 				'alias' => 'CommentersCommenterType',
 				'type' => 'LEFT',
-				'conditions' => [$this->hasMany['CommentersCommenterType']['foreignKey'] . ' = CommenterType.id']
+				'conditions' => ['CommentersCommenterType.' . $this->hasMany['CommentersCommenterType']['foreignKey'] . ' = CommenterType.id']
 			];
+
 			$conditions['OR'][]['OR'] = [
-				'CommentersCommenterType.user_id' => $commenterId,
+				'CommentersCommenterType.' . $this->hasAndBelongsToMany['Commenter']['associationForeignKey'] => $commenterId,
 				'CommentersCommenterType.id' => null,
 			];
 			
@@ -106,7 +107,7 @@ class CommenterType extends TalkBackAppModel {
  * @param array $options Additional options
  * @return array The adjusted query array
  **/
-	public function joinToModel($modelName, $query = array(), $options = array()) {
+	public function joinToModel($modelName, $query = [], $options = []) {
 		$habtm = $this->{$modelName}->hasAndBelongsToMany[$this->alias];
 
 		$options = array_merge(array(

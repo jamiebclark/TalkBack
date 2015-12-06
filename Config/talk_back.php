@@ -2,7 +2,7 @@
 $config['TalkBack'] = array(
 	'Commenter' => array(
 		'useTable' => null,
-		'model' => null,
+		'className' => null,
 		'primaryKey' => null,
 		'displayField' => null,
 		'emailField' => 'email',

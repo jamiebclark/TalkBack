@@ -53,6 +53,7 @@ class CommentableComponent extends Component {
 	
 	public function setComments($modelId, $limit = 10, $paginate = true) {
 		$Model = $this->_getModel();
+
 		$query = $Model->getCommentAssociation($modelId);
 		$query['limit'] = $limit;
 		

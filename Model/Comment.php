@@ -230,6 +230,8 @@ class Comment extends TalkBackAppModel {
 	}
 	
 	public function sendEmailUpdate($id, $blockCommenterIds = []) {
+		PluginConfig::init('TalkBack');
+
 		$comment = $this->find('first', array(
 			'contain' => ['Commenter'],
 			'conditions' => array($this->escapeField() => $id)

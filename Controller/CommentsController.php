@@ -2,7 +2,7 @@
 class CommentsController extends TalkBackAppController {
 	public $name = 'Comments';
 	
-	public function beforeFilter() {
+	public function beforeFilter($options = []) {
 
 		$this->Components->unload('TalkBack.Commentable');
 		$this->setValidateRedirectMethod('editable', function($args) {

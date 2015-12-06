@@ -24,4 +24,11 @@ class TalkBackAppHelper extends AppHelper {
 		}
 		return $url;
 	}
+
+	protected function urlPrefixReset($url = []) {
+		if (!empty($this->request->params['prefix'])) {
+			$url[$this->request->params['prefix']] = false;
+		}
+		return $url;
+	}
 }

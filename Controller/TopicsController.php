@@ -2,9 +2,9 @@
 class TopicsController extends TalkBackAppController {
 	public $name = 'Topics';
 	
-	public $components = array('TalkBack.Commentable');
+	public $components = ['TalkBack.Commentable'];
 	
-	public function beforeFilter() {
+	public function beforeFilter($options = []) {
 
 		// Checks user permissions for the forum
 		$this->setValidateRedirectMethod('forumPermission', function($args) {
@@ -23,7 +23,7 @@ class TopicsController extends TalkBackAppController {
 		$this->setValidateRedirectMethod('hasForum', function($args) {
 			if (empty($this->request->data['Topic']['forum_id']) && empty($args['forumId'])) {
 				$msg = 'Please select a forum before adding a topic';
-				$redirect = array('controller' => 'forums', 'action' => 'index');
+				$redirect = ['controller' => 'forums', 'action' => 'index'];
 			}
 			return compact('msg', 'redirect');
 		});
@@ -32,7 +32,7 @@ class TopicsController extends TalkBackAppController {
 		$this->setValidateRedirectMethod('editable', function($args) {
 			if (!$this->Topic->isEditable($args['id'], $this->Auth->user('id'), $this->CurrentCommenter->isAdmin())) {
 				$msg = 'Sorry you do not have permission to edit this';
-				$redirect = array('view' => $args['id']);
+				$redirect = ['view' => $args['id']];
 			}
 			return compact('msg', 'redirect');
 		});
@@ -41,7 +41,7 @@ class TopicsController extends TalkBackAppController {
 	}
 	
 	public function index($forumId = null) {
-		$redirect = array('controller' => 'forums', 'action' => 'view', $forumId);
+		$redirect = ['controller' => 'forums', 'action' => 'view', $forumId];
 		if (!empty($this->request->params['prefix'])) {
 			$redirect[$this->request->params['prefix']] = true;
 		}
@@ -53,16 +53,16 @@ class TopicsController extends TalkBackAppController {
 	
 	public function view($id = null) {
 		$this->prefixRedirect($id);
-		$this->validateRedirect(array('permission' => array($id)));
-		$query = array(
-			'contain' => array(
-				'Forum' => array('Channel'),
+		$this->validateRedirect(['permission' => [$id]]);
+		$query = [
+			'contain' => [
+				'Forum' => ['Channel'],
 				'Commenter',
-			)
-		);
+			]
+		];
 
 		if ($this->CurrentCommenter->isAdmin()) {
-			$query['contain']['CommenterHasRead']['Commenter'] = array();
+			$query['contain']['CommenterHasRead']['Commenter'] = [];
 		}
 
 		$topic = $this->FormData->findModel($id, null, $query);
@@ -96,7 +96,7 @@ class TopicsController extends TalkBackAppController {
 		);
 		// If users aren't allowed to make new topics, make sure they're admins
 		if (!$this->Topic->Forum->canTopicBeAdded($forumId, $this->Auth->user('id'))) {
-			$permissions['forumPermission'] = array($forumId);
+			$permissions['forumPermission'] = [$forumId];
 		}
 
 		$this->validateRedirect($permissions);
@@ -131,11 +131,11 @@ class TopicsController extends TalkBackAppController {
 	}
 	
 	public function admin_add($forumId = null) {
-		$this->FormData->addData(array(
-			'Topic' => array(
+		$this->FormData->addData([
+			'Topic' => [
 				'forum_id' => $forumId,
-			)
-		));
+			]
+		]);
 	}
 	
 	public function admin_edit($id = null) {

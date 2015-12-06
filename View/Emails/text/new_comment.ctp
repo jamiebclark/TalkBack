@@ -1,4 +1,5 @@
 <?php
+
 $url = $this->Comment->urlArray(['action' => 'view', $comment['Comment']['id']]);
 $unsubscribeUrl = $this->Comment->urlArray([
 	'controller' => 'commenters', 

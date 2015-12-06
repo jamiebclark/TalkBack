@@ -7,7 +7,7 @@ echo $this->Form->create();
 			<legend>Channel Description</legend><?php
 				echo $this->Form->hidden('id');
 				echo $this->Form->input('title');
-				echo $this->Form->input('description', array('rows' => 10));
+				echo $this->Form->input('description', ['rows' => 10]);
 		?></fieldset>
 		<fieldset>
 			<legend>Admins</legend>
@@ -16,33 +16,35 @@ echo $this->Form->create();
 					'label' => 'Administrators',
 					'options' => $adminCommenters,
 					'id' => 'admin-commenters',
-					'after' => $this->Commenter->addInput(array(
+					'after' => $this->Commenter->addInput([
 						'data-target' => '#admin-commenters',
-					))
+					])
 				));
 		?></fieldset>
 		<fieldset>
 			<legend>Permissions</legend><?php
-				echo $this->Form->inputs(array(
+				echo $this->Form->inputs([
 					'fieldset' => false,
-					'allow_forums' => array(
+					'allow_forums' => [
 						'label' => 'Allow all members to create new forums',
-					),
-					'allow_topics' => array(
+						'class' => 'checkbox',
+					],
+					'allow_topics' => [
 						'label' => 'Allow all members to post new topics',
-					)
-				));
+						'class' => 'checkbox',
+					]
+				]);
 		?></fieldset>
 	</div>
 	<div class="col-sm-6">
 		<fieldset>
 			<legend>Channel Access</legend><?php 
-				echo $this->Form->input('prefix', array(
+				echo $this->Form->input('prefix', [
 					'label' => 'URL Prefix',
 					'options' => $prefixes,
 					'after' => '<span class="help-block">If you would like to limit this channel to only showing up for a specific page prefix,
 						like <strong>/admin/</strong> or <strong>/staff/</strong></span>',
-				));
+				]);
 				
 				echo $this->Form->input('Commenter.Commenter', array(
 					'label' => 'Channel Members',
@@ -50,10 +52,10 @@ echo $this->Form->create();
 					
 				));
 				
-				echo $this->Form->input('CommenterType.CommenterType', array(
+				echo $this->Form->input('CommenterType.CommenterType', [
 					'label' => 'Member Types',
 					'after' => '<span class="help-block">Limit this channel to only specific user types</span>',
-				));
+				]);
 		?></fieldset>
 	</div>
 </div>

@@ -7,6 +7,14 @@ class TalkBackAppController extends AppController {
 		'FormData.FindModel' => ['plugin' => 'TalkBack'],
 		'FormData.FormData' => ['plugin' => 'TalkBack']
 	];
+
+	public $helpers = [
+		'Layout.Calendar',
+		'Layout.DisplayText',
+		'Layout.Layout',
+		'Layout.ModelView',
+		'Layout.Table',
+	];
 	
 	//public $helpers = array('TalkBack.TalkBack');
 	protected $tb_prefix;
@@ -16,7 +24,7 @@ class TalkBackAppController extends AppController {
 	// Stores the controller-specific validation redirect methods
 	private $_validationRedirectMethods = [];
 	
-	public function beforeFilter() {
+	public function beforeFilter($options = []) {
 		$this->savePrefix();
 
 		// Sets Admin methods

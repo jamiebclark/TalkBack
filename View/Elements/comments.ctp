@@ -1,6 +1,6 @@
 <?php
 $default = array(
-	'label' => 'Comment',			// How to refer to the comments (can also include an array('singular' => '', 'plural' => '')
+	'label' => 'Comment',			// How to refer to the comments (can also include an ['singular' => '', 'plural' => '']
 	'model' => null,				// The model associated with these comments
 	'modelId' => null,				// The specific model id associated with these comments
 	'isCommentable' => true,		// Can comments be added?
@@ -16,20 +16,20 @@ if (isset($this->viewVars['commentable'])) {
 }
 extract(array_merge($default, compact(array_keys($default))));
 
-$indexUrl = array(
+$indexUrl = [
 	'controller' => 'comments',
 	'action' => 'index',
 	$model,
 	$modelId,
 	'plugin' => 'talk_back',
-);
+];
 
 
 if (empty($url)) {
 	$url = $indexUrl;
 }
 
-$addCommentUrl = array('action' => 'add') + $indexUrl;
+$addCommentUrl = ['action' => 'add'] + $indexUrl;
 
 if (!is_array($label)) {
 	$label = array(
@@ -75,23 +75,23 @@ if (!empty($this->request->params['paging']['Comment'])) {
 			$class .= ' tb-comment-depth-' . $comment['Comment']['depth'];
 		}
 		
-		$commenterUrl = $this->Commenter->urlArray(array('action' => 'view', $comment['Commenter']['id']));
+		$commenterUrl = $this->Commenter->urlArray(['action' => 'view', $comment['Commenter']['id']]);
 		
 		?>
 		<div id="comment<?php echo $comment['Comment']['id'];?>" class="<?php echo $class; ?>">
 			<?php echo $this->Html->link(
-				$this->Commenter->image($comment['Commenter'], array('class' => 'media-object tb-comment-thumbnail')),
+				$this->Commenter->image($comment['Commenter'], ['class' => 'media-object tb-comment-thumbnail']),
 				$commenterUrl,
-				array('escape' => false, 'class' => 'pull-left')
+				['escape' => false, 'class' => 'pull-left']
 			); ?>
 			<div class="media-body">
 				<?php if ($comment['Comment']['deleted']): ?>
 					<em>Deleted</em>
 				<?php else: ?>
-					<?php echo $this->Comment->title($comment, array(
+					<?php echo $this->Comment->title($comment, [
 						'tag' => 'h5',
 						'class' => 'media-title',
-					)); ?>
+					]); ?>
 					<div class="tb-comment-body">
 						<?php echo $this->DisplayText->text($comment['Comment']['body']); ?>
 						<?php if ($comment['Comment']['modified'] != $comment['Comment']['created']): ?>
@@ -101,11 +101,11 @@ if (!empty($this->request->params['paging']['Comment'])) {
 						<?php if (!empty($multiLevel) && !empty($isCommentable)): ?>
 							<p class="text-right">
 							<?php echo $this->Html->link('Reply', 
-								$addCommentUrl + array(2 => $comment['Comment']['id']),
-								array(
+								$addCommentUrl + [2 => $comment['Comment']['id']],
+								[
 									'class' => 'btn btn-default btn-sm ajax-modal', 
 									'data-modal-title' => 'Reply to comment'
-								)
+								]
 							); ?>
 							</p>
 						<?php endif; ?>
@@ -122,11 +122,11 @@ if (!empty($this->request->params['paging']['Comment'])) {
 <?php elseif (!empty($isCommentable)): ?>
 	<?php echo $this->Html->link('Add ' . $label['singular'], 
 		$addCommentUrl,
-		array('class' => 'btn btn-primary ajax-modal', 'data-modal-title' => 'Add ' . $label['singular'])
+		['class' => 'btn btn-primary ajax-modal', 'data-modal-title' => 'Add ' . $label['singular']]
 	);?>	
 <?php endif; ?>
 <?php if (empty($pagination) && !empty($viewAll) && !empty($comments)): ?>
-	<?php echo $this->Html->link('View All ' . $label['plural'], $indexUrl, array('class' => 'btn btn-default')); ?>
+	<?php echo $this->Html->link('View All ' . $label['plural'], $indexUrl, ['class' => 'btn btn-default']); ?>
 <?php endif; ?>
 
 </div>

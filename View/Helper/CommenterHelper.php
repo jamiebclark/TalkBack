@@ -1,14 +1,18 @@
 <?php
 App::uses('TalkBackAppHelper', 'TalkBack.View/Helper');
+App::uses('PluginConfig', 'TalkBack.Utilities');
+
+
+
 class CommenterHelper extends TalkBackAppHelper {
 	public $name = 'Commenter';
-	public $helpers = array('Html', 'Form');
+	public $helpers = ['Html', 'Form'];
 	
-	public function urlArray($url = array()) {
-		return parent::urlArray($url + array('controller' => 'commenters'));
+	public function urlArray($url = []) {
+		return parent::urlArray($url + ['controller' => 'commenters']);
 	}
 	
-	public function image($commenter = array(), $options = array()) {
+	public function image($commenter = [], $options = []) {
 		$dir = Configure::read('TalkBack.Commenter.img.dir');
 		$field = Configure::read('TalkBack.Commenter.img.field');
 		if (substr($dir, -1) != '/' || substr($field, 0) != '/') {
@@ -20,37 +24,38 @@ class CommenterHelper extends TalkBackAppHelper {
 		return '';
 	}
 	
-	public function link($commenter = array(), $options = array()) {
-		$options = array_merge(array(
+	public function link($commenter = [], $options = []) {
+		$options = array_merge([
 			'prefix' => false,
-		), $options);
+		], $options);
 
-		$url = array('controller' => 'commenters', 'action' => 'view', $commenter['id'], 'plugin' => 'talk_back');
+		$url = ['controller' => 'commenters', 'action' => 'view', $commenter['id'], 'plugin' => 'talk_back'];
 		if ($options['prefix'] === false) {
-			$url += Prefix::reset();
+			$url += $this->urlPrefixReset();
 		} else if ($options['prefix'] !== true) {
 			$url[$options['prefix']] = true;
 		}
 
 		$commenter = !empty($commenter['Commenter']) ? $commenter['Commenter'] : $commenter;
-		return $this->Html->link($this->name($commenter), $url, array('class' => 'tb-commenter-link'));
+		return $this->Html->link($this->name($commenter), $url, ['class' => 'tb-commenter-link']);
 	}
 	
 	public function name($commenter = []) {
+		$displayField = Configure::read('TalkBack.Commenter.displayField');
 		$commenter = !empty($commenter['Commenter']) ? $commenter['Commenter'] : $commenter;
-		return $commenter[Configure::read('TalkBack.Commenter.displayField')];	
+		return $commenter[$displayField];	
 	}
 	
 	// Creates an autocomplete to add commenters into a form
-	public function addInput($options = array()) {
+	public function addInput($options = []) {
 		$default = array(
 			'type' => 'text',
 			'data-source' => Router::url(
-				$this->urlArray(array('controller' => 'commenters',	'action' => 'search'))
+				$this->urlArray(['controller' => 'commenters',	'action' => 'search'])
 			),
 			'data-target' => null, // Set this if something other than data[Commenter][Commenter][]
 		);
 		$options = array_merge($default, $options);
 		return $this->Form->input('add_commenter', $options);
-	}	
+	}
 }

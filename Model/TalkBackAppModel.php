@@ -17,10 +17,12 @@ class TalkBackAppModel extends AppModel {
 			if (!empty($config['className'])) {
 				// Properties to copy from the existing model
 				$_copyProperties = array('useTable', 'tablePrefix', 'displayField', 'primaryKey', 'actsAs');
+
 				if ($Copy = ClassRegistry::init($config['className'], true)) {
 					foreach ($_copyProperties as $property) {
 						$val = isset($Copy->$property) ? $Copy->$property : null;
 						$this->$property = $val;
+
 						// Stores them for accessing later
 						Configure::write('TalkBack.' . $this->name . '.' . $property, $val);
 					}

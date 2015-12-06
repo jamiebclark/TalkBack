@@ -9,10 +9,13 @@ if (!is_array($label)) {
 	);
 }
 
-$model = null;
-$modelId = null;
-$currentCommenterId = null;
-$prefix = null;
+$default = [
+	'model' => null,
+	'modelId' => null,
+	'currentCommenterId' => null,
+	'prefix' => null,
+];
+extract(array_merge($default, compact(array_keys($default))));
 
 if (!empty($this->viewVars['commentable']['model'])) {
 	$model = $this->viewVars['commentable']['model'];
