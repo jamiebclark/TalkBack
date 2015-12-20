@@ -36,6 +36,7 @@ class ForumsController extends TalkBackAppController {
 				'conditions' => array('Topic.forum_id' => $id)
 			)
 		);
+		$this->set('canTopicBeAdded', $this->Forum->canTopicBeAdded($id, $this->Auth->user('id')));
 		$this->set('topics', $this->paginate('Topic'));		
 		$this->set('updatedTopics', $this->Forum->Topic->findUpdatedList([
 			'isAdmin' => $this->CurrentCommenter->isAdmin(),

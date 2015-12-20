@@ -26,11 +26,13 @@
 						); ?>
 					<?php endif; ?>
 
-					<?php echo $this->Html->link(
-						'<i class="fa fa-plus"></i> Add new Topic',
-						array('controller' => 'topics', 'action' => 'add', $forum['Forum']['id']),
-						array('class' => 'btn btn-primary ajax-modal', 'data-modal-title' => 'Add a new Topic', 'escape' => false)
-					); ?>
+					<?php if ($canTopicBeAdded): ?>
+						<?php echo $this->Html->link(
+							'<i class="fa fa-plus"></i> Add new Topic',
+							array('controller' => 'topics', 'action' => 'add', $forum['Forum']['id']),
+							array('class' => 'btn btn-primary ajax-modal', 'data-modal-title' => 'Add a new Topic', 'escape' => false)
+						); ?>
+					<?php endif; ?>
 				</div>
 				
 				<?php if (!empty($forum['Forum']['description'])): ?>
@@ -44,15 +46,17 @@
 		<div class="panel panel-default">
 			<?php echo $this->element('topics/archive'); ?>
 			<div class="panel-footer">
-				<?php echo $this->Html->link(	
-					'<i class="fa fa-plus"></i> Add Topic', 
-					array('controller' => 'topics', 'action' => 'add', $forum['Forum']['id']),
-					array(
-						'class' => 'btn btn-default btn-primary ajax-modal', 
-						'data-modal-title' => 'Add a new Topic',
-						'escape' => false,
-					)
-				);?>
+				<?php if ($canTopicBeAdded): ?>
+					<?php echo $this->Html->link(	
+						'<i class="fa fa-plus"></i> Add Topic', 
+						array('controller' => 'topics', 'action' => 'add', $forum['Forum']['id']),
+						array(
+							'class' => 'btn btn-default btn-primary ajax-modal', 
+							'data-modal-title' => 'Add a new Topic',
+							'escape' => false,
+						)
+					);?>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>
