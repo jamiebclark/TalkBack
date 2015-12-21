@@ -21,18 +21,21 @@ $stamp = strtotime($topic['Topic']['created']);
 		//echo $this->Html->getCrumbs();
 		?>
 		<div class="tb-topic-view">
-			<div class="tb-comment original-comment">
-				<h4 class="tb-comment-title"><?php echo $topic['Topic']['title']; ?></h4>
-				<?php echo $this->DisplayText->text($topic['Topic']['body']); ?>
-				<h5>
-					<?php echo $this->Commenter->link($topic['Commenter']); ?>
-					<?php echo sprintf('<span class="date-commented">%s at %s</span>', date('M j, Y', $stamp), date('g:ia', $stamp)); ?>
-				</h5>
-				<h5><?php echo number_format($topic['Topic']['comment_count']); ?> Comments</h5>
+			<div class="panel panel-default">
+				<div class="tb-comment original-comment">
+					<h4 class="tb-comment-title"><?php echo $topic['Topic']['title']; ?></h4>
+					<?php echo $this->DisplayText->text($topic['Topic']['body']); ?>
+					<h5>
+						<?php echo $this->Commenter->link($topic['Commenter']); ?>
+						<?php echo sprintf('<span class="date-commented">%s at %s</span>', date('M j, Y', $stamp), date('g:ia', $stamp)); ?>
+					</h5>
+					<h5><?php echo number_format($topic['Topic']['comment_count']); ?> Comments</h5>
+				</div>
+				<?php echo $this->element('TalkBack.neighbors', array('neighbors' => $neighbors, 'model' => 'Topic')); ?>
 			</div>
-			<?php echo $this->element('TalkBack.neighbors', array('neighbors' => $neighbors, 'model' => 'Topic')); ?>
 			<a name="comments"></a>
 			<?php echo $this->element('comments', array(
+				'panel' => true,
 				'model' => 'TalkBack.Topic',
 				'modelId' => $topic['Topic']['id'],
 				'url' => array($topic['Topic']['id'], '#' => 'comments'),

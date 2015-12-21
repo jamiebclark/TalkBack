@@ -16,7 +16,7 @@
 						$class .=  ' unread';
 					}
 					$title = $this->Text->truncate($sidebarTopic['Topic']['title']);
-					$title = $this->Html->tag('h4', $title);
+					$title = $this->Html->tag('h6', $title, ['class' => 'tb-topic-comment-quote-title']);
 
 					if (!empty($sidebarTopic[0]['total_unread'])) {
 						$title .= $this->Html->tag('span', 

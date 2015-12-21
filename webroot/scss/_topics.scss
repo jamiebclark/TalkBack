@@ -4,8 +4,11 @@
 .tb-topics-archive-title {
 	margin: 0;
 }
-
 .tb-topic-comment-quote {
+	&-title {
+		margin: 0;
+		color: inherit;
+	}
 	footer {
 		color: #CCC;
 	}

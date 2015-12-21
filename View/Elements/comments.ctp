@@ -7,8 +7,9 @@ $default = array(
 	'isCommentHasRead' => true,		// Should it look to see if the comment has been read?
 	'viewAll' => false,				// Should it include a linke to "View All Comments"?
 	'form' => true,					// Include the comment form
-	'class' => false,				// Additional style class for the list
+	'class' => '',				// Additional style class for the list
 	'multiLevel' => true,			// Allow for replies to individual comments
+	'panel' => false,
 );
 // Looks for variables set by Commentable Component
 if (isset($this->viewVars['commentable'])) {
@@ -24,6 +25,9 @@ $indexUrl = [
 	'plugin' => 'talk_back',
 ];
 
+if ($panel) {
+	$class .= ' panel panel-default';
+}
 
 if (empty($url)) {
 	$url = $indexUrl;
@@ -51,7 +55,11 @@ if (!empty($this->request->params['paging']['Comment'])) {
 
 <div id="comments" class="tb-comments <?php echo $class; ?>">
 <?php if (!empty($label)): ?>
-	<h4><?php echo $label['plural']; ?></h4>
+	<?php if ($panel): ?>
+		<div class="panel-heading"><?php echo $label['plural']; ?></div>
+	<?php else: ?>
+		<h4><?php echo $label['plural']; ?></h4>
+	<?php endif; ?>
 <?php endif; ?>
 
 <?php if ($form === 'top'): ?>
