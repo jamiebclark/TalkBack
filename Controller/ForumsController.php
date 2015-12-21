@@ -42,6 +42,7 @@ class ForumsController extends TalkBackAppController {
 			'isAdmin' => $this->CurrentCommenter->isAdmin(),
 			'conditions' => ['Forum.id' => $id]
 		]));
+		$this->set('title_for_layout', 'Forum: ' . $result['Forum']['title']);
 	}
 	
 	public function add($channelId = null) {

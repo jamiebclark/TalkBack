@@ -62,6 +62,7 @@ class ChannelsController extends TalkBackAppController {
 				'canCreateForum' =>$isAdmin || $result['allow_forums'],
 			]
 		]);
+		$this->set('title_for_layout', $result['title']);
 	}
 	
 	public function commenters($id) {

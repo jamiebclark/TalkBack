@@ -87,6 +87,8 @@ class TopicsController extends TalkBackAppController {
 		$this->set('updatedTopics', $this->Topic->findUpdatedList([
 			'conditions' => ['Topic.forum_id' => $topic['Topic']['forum_id']]
 		]));
+
+		$this->set('title_for_layout', 'Topic: ' . $topic['Topic']['title']);
 	}
 	
 	public function add($forumId = null) {
