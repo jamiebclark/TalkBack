@@ -56,7 +56,9 @@ if (!empty($this->request->params['paging']['Comment'])) {
 <div id="comments" class="tb-comments <?php echo $class; ?>">
 <?php if (!empty($label)): ?>
 	<?php if ($panel): ?>
-		<div class="panel-heading"><?php echo $label['plural']; ?></div>
+		<div class="panel-heading">
+			<span class="panel-title"><?php echo $label['plural']; ?></span>
+		</div>
 	<?php else: ?>
 		<h4><?php echo $label['plural']; ?></h4>
 	<?php endif; ?>

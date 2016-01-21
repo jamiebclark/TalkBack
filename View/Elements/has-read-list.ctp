@@ -1,5 +1,5 @@
 <div id="tb-has-read" class="tb-has-hread-list panel panel-default">
-	<div class="panel-heading">Commenters have read</div>
+	<div class="panel-heading"><span class="panel-title">Commenters have read</span></div>
 	<?php if (!empty($result['CommenterHasRead'])): ?>
 		<ul class="list-group">
 		<?php foreach ($result['CommenterHasRead'] as $commenterHasRead): 

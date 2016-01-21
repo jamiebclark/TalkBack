@@ -28,7 +28,11 @@
 	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<?php echo $this->Html->link('Users', array('action' => 'commenters', $channel['Channel']['id'])); ?>
+				<?php echo $this->Html->link(
+					'Users', 
+					array('action' => 'commenters', $channel['Channel']['id']),
+					['class' => 'panel-title']
+				); ?>
 			</div>
 			<div class="panel-body"><?php echo $this->Html->link(
 				sprintf('<strong>%s</strong> users', number_format($commenterCount)),

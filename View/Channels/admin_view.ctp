@@ -23,13 +23,13 @@ $liClose = '</li>';
 		<?php endif; ?>
 
 		<div class="panel panel-default">
-			<div class="panel-heading">Forums</div>
+			<div class="panel-heading"><span class="panel-title">Forums</span></div>
 			<?php echo $this->element('forums/archive-admin'); ?>
 		</div>
 	</div>
 	<div class="col-md-4">
 		<div class="panel panel-default">
-			<div class="panel-heading">Permissions</div>
+			<div class="panel-heading"><span class="panel-title">Permissions</span></div>
 			<div class="panel-body">
 				<p class="help-block">The channel can only be seen by the following combination of credentials</p>
 				<dl>

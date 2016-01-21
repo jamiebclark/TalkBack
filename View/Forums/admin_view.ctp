@@ -13,7 +13,7 @@ $liClose = '</li>';
 <div class="row">
 	<div class="col-sm-8">
 		<div class="panel panel-default">
-			<div class="panel-heading">About</div>
+			<div class="panel-heading"><span class="panel-title">About</span></div>
 			<?php
 			echo $this->Layout->infoTable(array(
 				'Title' => $forum['Forum']['title'],
@@ -28,13 +28,13 @@ $liClose = '</li>';
 			?>
 		</div>
 		<div class="panel panel-default">
-			<div class="panel-heading">Topics</div>
+			<div class="panel-heading"><span class="panel-title">Topics</span></div>
 			<?php echo $this->element('topics/archive-admin'); ?>
 		</div>
 	</div>
 	<div class="col-sm-4">
 		<div class="panel panel-default">
-			<div class="panel-heading">Permissions</div>
+			<div class="panel-heading"><span class="panel-title">Permissions</span></div>
 			<div class="panel-body">
 				<dl>
 					<dt>Commenters</dt>

@@ -5,7 +5,8 @@
 				<div class="panel-heading">
 					<?php echo $this->Html->link(
 						$channel['Channel']['title'],
-						array('controller' => 'channels', 'action' => 'view', $channel['Channel']['id'], 'plugin' => 'talk_back')
+						array('controller' => 'channels', 'action' => 'view', $channel['Channel']['id'], 'plugin' => 'talk_back'),
+						['class' => 'panel-title']
 					); ?>
 				</div>
 

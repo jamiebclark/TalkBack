@@ -7,7 +7,7 @@ echo $this->Layout->defaultHeader($topic['Topic']['id'],
 ); 
 ?>
 <div class="panel panel-default">
-	<div class="panel-heading">Topic</div>
+	<div class="panel-heading"><span class="panel-title">Topic</span></div>
 	<div class="panel-body">
 		<h2><?php echo $this->Html->tag('h2', $topic['Topic']['title']); ?></h2>
 		<?php echo $this->DisplayText->text($topic['Topic']['body'], array('class' => 'lead')); ?>
@@ -15,6 +15,6 @@ echo $this->Layout->defaultHeader($topic['Topic']['id'],
 </div>
 
 <div class="panel panel-default">
-	<div class="panel-heading">Replies</div>
+	<div class="panel-heading"><span class="panel-title">Replies</span></div>
 	<?php echo $this->element('comments/archive-admin'); ?>
 </div>
