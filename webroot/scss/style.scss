@@ -1,9 +1,2 @@
-@import "variables";
-
-@import "bootstrap3.2/bootstrap";
-@import "mixins";
-
-@import "components";
-@import "comments";
-@import "messages";
-@import "topics";
+@import "utilities/index";
+@import "models/index";
