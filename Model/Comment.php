@@ -28,7 +28,7 @@ class Comment extends TalkBackAppModel {
 
 	public $validate = [
 		'body' => [
-			'rule' => 'notEmpty',
+			'rule' => 'notBlank',
 			'message' => 'Please enter a comment',
 		]
 	];

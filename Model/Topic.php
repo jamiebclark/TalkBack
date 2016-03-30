@@ -17,7 +17,7 @@ class Topic extends TalkBackAppModel {
 
 	public $validate = [
 		'title' => [
-			'rule' => 'notEmpty',
+			'rule' => 'notBlank',
 			'message' => 'Please give the topic a title',
 		]
 	];
