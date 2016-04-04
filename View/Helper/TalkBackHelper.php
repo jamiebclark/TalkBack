@@ -26,10 +26,9 @@ class TalkBackHelper extends AppHelper {
 				),
 				$this->Html->link(
 					'Remove', 
-					$url + ['action' => 'delete'],
-					null,
-					'Remove this comment?'
-				)
+					$url + ['action' => 'delete'],[
+	'confirm' => 'Remove this comment?'
+])
 			);
 		}
 		$out .= sprintf('<span class="date-commented">%s at %s</span>', date('M j, Y', $stamp), date('g:ia', $stamp));

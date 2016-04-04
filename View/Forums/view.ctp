@@ -20,10 +20,11 @@
 						); ?>
 						<?php echo $this->Html->link(
 							'<i class="fa fa-times"></i> Delete Forum',
-							array('action' => 'delete', $forum['Forum']['id'], 'admin' => true),
-							array('class' => 'btn btn-danger', 'escape' => false),
-							'Are you sure you want to delete this forum? All associated topics will also be delete'
-						); ?>
+							array('action' => 'delete', $forum['Forum']['id'], 'admin' => true),[
+	'class' => 'btn btn-danger',
+	'escape' => false,
+	'confirm' => 'Are you sure you want to delete this forum? All associated topics will also be delete'
+]); ?>
 					<?php endif; ?>
 
 					<?php if ($canTopicBeAdded): ?>
