@@ -148,7 +148,7 @@ class TalkBackAppController extends AppController {
 			}
 		
 			if (!empty($msg)) {
-				$this->Session->setFlash($msg);
+				$this->Flash->alert($msg);
 			}
 			if (!empty($redirect)) {
 				if ($redirect === true) {
