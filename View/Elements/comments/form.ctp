@@ -94,7 +94,7 @@ if ($isLoggedIn = !empty($currentCommenter['Commenter'])) {
 			]);
 			*/
 			
-			echo $this->Form->end('Add ' . $label['singular'], ['class' => 'btn btn-primary']);
+			echo $this->Form->end('Post', ['class' => 'btn btn-primary']);
 		} else {
 			$textOptions['placeholder'] = 'Please sign in first';
 			$textOptions['disabled'] = true;

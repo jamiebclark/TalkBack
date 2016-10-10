@@ -129,7 +129,9 @@ if (!empty($this->request->params['paging']['Comment'])) {
 <?php endif; ?>
 <?php if ($form === true || $form == 'bottom'): ?>
 	<?php echo $this->element('TalkBack.comments/form', compact('model', 'modelId')); ?>
-<?php elseif (!empty($isCommentable)): ?>
+<?php elseif (!empty($isCommentable) && (!empty($comments) || $form === false)): 
+	// Only add the "Add Comment" button if 1. You are allowed and 2. There are existing comments or there isn't a comment form
+	?>
 	<?php echo $this->Html->link('Add ' . $label['singular'], 
 		$addCommentUrl,
 		['class' => 'btn btn-primary ajax-modal', 'data-modal-title' => 'Add ' . $label['singular']]
